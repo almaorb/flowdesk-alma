@@ -22,6 +22,7 @@ export type Priority = (typeof PRIORITIES)[number];
 export const AUDIT_ACTIONS = [
   'ORG_CREATED',
   'USER_SIGNED_UP',
+  'USER_UPDATED',
   'USER_LOGGED_IN',
   'USER_LOGGED_OUT',
   'INVITE_CREATED',

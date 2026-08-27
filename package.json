@@ -2,7 +2,8 @@
   "name": "flowdesk",
   "version": "1.0.0",
   "private": true,
-  "description": "FlowDesk — multi-tenant customer support helpdesk",
+  "type": "module",
+  "description": "FlowDesk \u2014 multi-tenant customer support helpdesk",
   "workspaces": [
     "packages/*",
     "apps/*"
