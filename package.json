@@ -1,0 +1,47 @@
+{
+  "name": "flowdesk",
+  "version": "1.0.0",
+  "private": true,
+  "description": "FlowDesk — multi-tenant customer support helpdesk",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "npm run build -w @flowdesk/shared && npm run build -w @flowdesk/api && npm run build -w @flowdesk/web",
+    "dev": "npm run build -w @flowdesk/shared && concurrently -n shared,api,web -c gray,blue,magenta \"npm run dev -w @flowdesk/shared\" \"npm run dev -w @flowdesk/api\" \"npm run dev -w @flowdesk/web\"",
+    "test": "npm run test -w @flowdesk/shared && npm run test -w @flowdesk/api",
+    "lint": "eslint . --max-warnings=0",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "npm run typecheck -w @flowdesk/shared && npm run typecheck -w @flowdesk/api && npm run typecheck -w @flowdesk/web",
+    "db:migrate": "npm run db:migrate -w @flowdesk/api",
+    "db:deploy": "npm run db:deploy -w @flowdesk/api",
+    "db:seed": "npm run db:seed -w @flowdesk/api",
+    "db:reset": "npm run db:reset -w @flowdesk/api"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "concurrently": "^9.1.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "globals": "^15.14.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.0"
+  },
+  "allowScripts": {
+    "@prisma/client@6.19.3": true,
+    "@prisma/engines@6.19.3": true,
+    "prisma@6.19.3": true,
+    "esbuild@0.28.2": true,
+    "esbuild@0.21.5": true,
+    "esbuild@0.25.12": true,
+    "@scarf/scarf@1.4.0": true
+  }
+}
