@@ -1,0 +1,1256 @@
+<title>FlowDesk Build-Off</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap"
+/>
+
+<style>
+  :root {
+    --ground: #eef1f5;
+    --surface: #ffffff;
+    --surface-alt: #f7f9fb;
+    --ink: #131820;
+    --ink-soft: #3a4552;
+    --muted: #5f6b7a;
+    --line: #dbe1e9;
+    --line-strong: #c3ccd8;
+    --rule: #2e5e8e;
+
+    --pass: #16714a;
+    --pass-bg: #e3f2ea;
+    --tie: #3f5f80;
+    --tie-bg: #e5ecf3;
+    --warn: #8a5d09;
+    --warn-bg: #f8efdc;
+    --crit: #9d2f2f;
+    --crit-bg: #fae7e7;
+
+    --shadow: 0 1px 2px rgba(19, 24, 32, 0.05), 0 1px 3px rgba(19, 24, 32, 0.06);
+
+    --step--1: clamp(0.76rem, 0.74rem + 0.1vw, 0.82rem);
+    --step-0: clamp(0.95rem, 0.92rem + 0.14vw, 1.02rem);
+    --step-1: clamp(1.14rem, 1.08rem + 0.3vw, 1.32rem);
+    --step-2: clamp(1.5rem, 1.35rem + 0.7vw, 2rem);
+    --step-3: clamp(2rem, 1.6rem + 1.9vw, 3.4rem);
+
+    color-scheme: light;
+  }
+
+  :root:not([data-theme='light']) {
+    @media (prefers-color-scheme: dark) {
+      --ground: #0e1116;
+      --surface: #161a21;
+      --surface-alt: #1c212a;
+      --ink: #e4e9ef;
+      --ink-soft: #c2cad4;
+      --muted: #939eac;
+      --line: #242a34;
+      --line-strong: #333b48;
+      --rule: #7ea9d6;
+
+      --pass: #5cc48f;
+      --pass-bg: #14291f;
+      --tie: #8fb2d4;
+      --tie-bg: #182230;
+      --warn: #d9ab48;
+      --warn-bg: #2a2213;
+      --crit: #e08181;
+      --crit-bg: #2c1717;
+
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme='dark'] {
+    --ground: #0e1116;
+    --surface: #161a21;
+    --surface-alt: #1c212a;
+    --ink: #e4e9ef;
+    --ink-soft: #c2cad4;
+    --muted: #939eac;
+    --line: #242a34;
+    --line-strong: #333b48;
+    --rule: #7ea9d6;
+
+    --pass: #5cc48f;
+    --pass-bg: #14291f;
+    --tie: #8fb2d4;
+    --tie-bg: #182230;
+    --warn: #d9ab48;
+    --warn-bg: #2a2213;
+    --crit: #e08181;
+    --crit-bg: #2c1717;
+
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+
+    color-scheme: dark;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family:
+      'Public Sans',
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      'Segoe UI',
+      sans-serif;
+    font-size: var(--step-0);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  .display {
+    font-family: Archivo, ui-sans-serif, system-ui, sans-serif;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .mono,
+  code,
+  td.num,
+  .num {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .wrap {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 0 clamp(1rem, 4vw, 2.5rem);
+  }
+
+  /* ---------------------------------------------------------- masthead -- */
+
+  header.masthead {
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(1.75rem, 3vw, 2.5rem);
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: var(--step--1);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--rule);
+    margin: 0 0 1rem;
+  }
+
+  h1 {
+    font-size: var(--step-3);
+    font-weight: 700;
+    letter-spacing: -0.032em;
+    line-height: 1.02;
+  }
+
+  .standfirst {
+    margin: 1.1rem 0 0;
+    max-width: 62ch;
+    font-size: var(--step-1);
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+
+  .meta-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+  .meta-strip b {
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+
+  /* ------------------------------------------------------------ layout -- */
+
+  main {
+    padding-bottom: 5rem;
+  }
+
+  section {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--ink);
+  }
+  .section-head h2 {
+    font-size: var(--step-2);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .section-head .tag {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: var(--step--1);
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .lede {
+    max-width: 68ch;
+    color: var(--ink-soft);
+    margin: 0 0 1.5rem;
+  }
+
+  /* ------------------------------------------------------- verdict band -- */
+
+  .verdict {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: stretch;
+    gap: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .verdict .side {
+    padding: clamp(1.25rem, 3vw, 2rem);
+  }
+  .verdict .side.right {
+    text-align: right;
+  }
+
+  .verdict .spine {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 1rem 0.9rem;
+    background: var(--surface-alt);
+    border-left: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: var(--step--1);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .entrant {
+    font-family: Archivo, sans-serif;
+    font-size: var(--step-1);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .entrant .who {
+    display: block;
+    font-size: var(--step--1);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .score {
+    font-family: 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    margin: 0.6rem 0 0.2rem;
+    color: var(--pass);
+  }
+  .score-note {
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+
+  /* --------------------------------------------------------- disclosure -- */
+
+  .disclosure {
+    margin-top: 1.5rem;
+    border: 1px solid var(--warn);
+    border-left-width: 4px;
+    border-radius: 3px;
+    background: var(--warn-bg);
+    padding: 1rem 1.25rem;
+  }
+  .disclosure h3 {
+    font-size: var(--step-0);
+    font-weight: 700;
+    color: var(--warn);
+    margin-bottom: 0.35rem;
+    letter-spacing: -0.01em;
+  }
+  .disclosure p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    line-height: 1.6;
+  }
+  .disclosure p + p {
+    margin-top: 0.5rem;
+  }
+
+  /* -------------------------------------------------------------- table -- */
+
+  .scroll {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--step--1);
+  }
+
+  thead th {
+    position: sticky;
+    top: 0;
+    background: var(--surface-alt);
+    border-bottom: 1px solid var(--line-strong);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    text-align: left;
+    padding: 0.7rem 0.9rem;
+    white-space: nowrap;
+  }
+  thead th.r,
+  td.r {
+    text-align: right;
+  }
+  thead th.c,
+  td.c {
+    text-align: center;
+  }
+
+  tbody td {
+    padding: 0.62rem 0.9rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  tbody tr:hover {
+    background: var(--surface-alt);
+  }
+
+  td.metric {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  td.num {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  td.detail {
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+
+  .lead {
+    font-weight: 700;
+  }
+  .lead-a {
+    color: var(--pass);
+  }
+  .lead-none {
+    color: var(--muted);
+  }
+
+  /* -------------------------------------------------------------- pills -- */
+
+  .pill {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .pill.pass {
+    background: var(--pass-bg);
+    color: var(--pass);
+  }
+  .pill.tie {
+    background: var(--tie-bg);
+    color: var(--tie);
+  }
+  .pill.warn {
+    background: var(--warn-bg);
+    color: var(--warn);
+  }
+  .pill.crit {
+    background: var(--crit-bg);
+    color: var(--crit);
+  }
+
+  /* ------------------------------------------------------ difference cards -- */
+
+  .diffs {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .diff {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .diff > header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding: 0.85rem 1.1rem;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface-alt);
+  }
+  .diff > header h3 {
+    font-size: var(--step-0);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .diff .body {
+    padding: 1rem 1.1rem;
+  }
+  .diff .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 0.9rem;
+  }
+  .diff .split > div {
+    background: var(--surface);
+    padding: 0.8rem 0.9rem;
+  }
+  .diff .split .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.35rem;
+  }
+  .diff .split .val {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .diff .split .val code {
+    font-size: 0.78rem;
+    background: var(--surface-alt);
+    padding: 0.08rem 0.3rem;
+    border-radius: 2px;
+    color: var(--ink);
+  }
+  .diff .verdict-line {
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  .diff .verdict-line strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* ------------------------------------------------------------- notes -- */
+
+  ul.notes {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--ink-soft);
+  }
+  ul.notes li {
+    margin-bottom: 0.55rem;
+  }
+  ul.notes li::marker {
+    color: var(--rule);
+  }
+  ul.notes code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    background: var(--surface-alt);
+    padding: 0.08rem 0.3rem;
+    border-radius: 2px;
+    border: 1px solid var(--line);
+  }
+
+  .panel {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    padding: clamp(1.1rem, 3vw, 1.6rem);
+  }
+
+  footer {
+    margin-top: 4rem;
+    padding: 1.75rem 0 0;
+    border-top: 1px solid var(--line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+  footer a {
+    color: var(--rule);
+  }
+
+  @media (max-width: 680px) {
+    .verdict {
+      grid-template-columns: 1fr;
+    }
+    .verdict .side.right {
+      text-align: left;
+    }
+    .verdict .spine {
+      flex-direction: row;
+      gap: 0.6rem;
+      border-left: 0;
+      border-right: 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .diff .split {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--rule);
+    outline-offset: 2px;
+  }
+</style>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">Head-to-head build evaluation</p>
+    <h1>FlowDesk Build-Off</h1>
+    <p class="standfirst">
+      Two agents, one identical brief: a multi-tenant helpdesk with real-time collaboration, an SLA
+      engine and SQL analytics. Both were run live, side by side, against the same nineteen
+      behavioural probes.
+    </p>
+    <div class="meta-strip">
+      <span><b>Spec</b> FlowDesk, 8 required features</span>
+      <span><b>Method</b> both APIs booted, probed, browser-walked</span>
+      <span><b>Date</b> 28 Aug 2026</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- ======================================================= VERDICT === -->
+  <section>
+    <div class="verdict">
+      <div class="side">
+        <p class="entrant"><span class="who">Entrant A</span>Alma</p>
+        <p class="score">19<span style="color: var(--muted); font-size: 0.5em">/19</span></p>
+        <p class="score-note">live behavioural probes passed</p>
+      </div>
+      <div class="spine">
+        <span>vs</span>
+      </div>
+      <div class="side right">
+        <p class="entrant"><span class="who">Entrant B</span>Devin</p>
+        <p class="score">19<span style="color: var(--muted); font-size: 0.5em">/19</span></p>
+        <p class="score-note">live behavioural probes passed</p>
+      </div>
+    </div>
+
+    <div class="disclosure">
+      <h3>Read this before the numbers</h3>
+      <p>
+        <b>I built the Alma entry.</b> I cannot be a neutral judge of my own work, so everything
+        below is either a measurement anyone can re-run or a design difference stated with both
+        sides shown. Where a call is a judgement rather than a measurement, it says so.
+      </p>
+      <p>
+        My first probe run scored Devin 16/22, then 4/12. Both were <em>my</em> bugs — the probe
+        assumed Alma's route names, response envelope and query parameters, and twice the previous
+        run's rate-limit hammering was still locking out the next run. After fixing the harness,
+        both entrants pass all nineteen probes. A comparison that flatters the author's own build on
+        first run is usually measuring the harness, not the code.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================================================== PROBE MATRIX === -->
+  <section>
+    <div class="section-head">
+      <h2>Live probe matrix</h2>
+      <span class="tag">both servers running · identical requests</span>
+    </div>
+    <p class="lede">
+      Each row is one HTTP exchange fired at both running APIs against their own seeded data. Not
+      code review — observed behaviour.
+    </p>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Probe</th>
+            <th class="c">Alma</th>
+            <th class="c">Devin</th>
+            <th>Observed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="metric">All four roles authenticate</td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="detail">admin, agent, customer, second-org admin</td>
+          </tr>
+          <tr>
+            <td class="metric">Server-side pagination</td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="detail">220 vs 140 tickets in org A, correct page metadata</td>
+          </tr>
+          <tr>
+            <td class="metric">Free-text search narrows in SQL</td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="detail"><code>q=webhook</code> → 15 of 220 · 9 of 140</td>
+          </tr>
+          <tr>
+            <td class="metric">Status + priority filter</td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="detail">both narrowed to 4 rows</td>
+          </tr>
+          <tr>
+            <td class="metric">SLA-breach filter</td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="detail">81 breached · 50 breached</td>
+          </tr>
+          <tr>
+            <td class="metric">Sort by priority, descending</td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="detail">both returned URGENT first</td>
+          </tr>
+          <tr>
+            <td class="metric">Unauthenticated request refused</td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="detail">401 on both</td>
+          </tr>
+          <tr>
+            <td class="metric">Cross-tenant read / patch / comment / delete</td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="detail">404 on all four verbs, both — no existence oracle</td>
+          </tr>
+          <tr>
+            <td class="metric">Search scoped per tenant</td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="detail">220/90 vs 140/80 across the two orgs</td>
+          </tr>
+          <tr>
+            <td class="metric">Illegal edge CLOSED → IN_PROGRESS</td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="detail">409 <code>INVALID_TRANSITION</code> on both</td>
+          </tr>
+          <tr>
+            <td class="metric">Agent barred from reopening</td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="detail">
+              403 <code>FORBIDDEN_TRANSITION</code> · 409 <code>TRANSITION_FORBIDDEN</code>
+            </td>
+          </tr>
+          <tr>
+            <td class="metric">Admin may reopen</td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="detail">200 on both</td>
+          </tr>
+          <tr>
+            <td class="metric">400 with field-level errors</td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="detail">both return per-field messages</td>
+          </tr>
+          <tr>
+            <td class="metric">Consistent error envelope</td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="detail"><code>{ error: { code, message } }</code> on both</td>
+          </tr>
+          <tr>
+            <td class="metric">Customer blocked from analytics</td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="detail">403 on both</td>
+          </tr>
+          <tr>
+            <td class="metric">Agent blocked from audit log</td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="detail">403 on both</td>
+          </tr>
+          <tr>
+            <td class="metric">Analytics computed in SQL</td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="detail">4 endpoints · 1 consolidated endpoint</td>
+          </tr>
+          <tr>
+            <td class="metric">OpenAPI + Swagger UI served</td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="detail">200 on both</td>
+          </tr>
+          <tr>
+            <td class="metric">Auth rate limiting engages</td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="c"><span class="pill pass">Pass</span></td>
+            <td class="detail">429 after 19 · after 16 bad attempts</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================================================ MEASURED LEDGER === -->
+  <section>
+    <div class="section-head">
+      <h2>Measured ledger</h2>
+      <span class="tag">counted, not judged</span>
+    </div>
+    <p class="lede">
+      Every figure here came from a command run against both checkouts. Bigger is not automatically
+      better — volume is only evidence of depth where it buys coverage.
+    </p>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Measure</th>
+            <th class="r">Alma</th>
+            <th class="r">Devin</th>
+            <th>What it tells you</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="metric">Automated tests — <b>all executed, all passing</b></td>
+            <td class="r num lead lead-a">180</td>
+            <td class="r num">42</td>
+            <td class="detail">
+              both suites run against real Postgres, no mocks; Devin 42/42 in 11.5 s, Alma 180/180
+              in 10.4 s
+            </td>
+          </tr>
+          <tr>
+            <td class="metric">Test files</td>
+            <td class="r num lead lead-a">11</td>
+            <td class="r num">7</td>
+            <td class="detail">Alma adds dedicated RBAC, SLA-sweep and OpenAPI-coverage suites</td>
+          </tr>
+          <tr>
+            <td class="metric">Total lines of code</td>
+            <td class="r num">12,199</td>
+            <td class="r num">6,542</td>
+            <td class="detail">
+              Alma is ~1.9× larger; part is tests, part is genuinely more surface
+            </td>
+          </tr>
+          <tr>
+            <td class="metric">— shared package</td>
+            <td class="r num">874</td>
+            <td class="r num">437</td>
+            <td class="detail">both share enums, schemas, state machine, SLA rules</td>
+          </tr>
+          <tr>
+            <td class="metric">— API</td>
+            <td class="r num">7,250</td>
+            <td class="r num">3,923</td>
+            <td class="detail">includes tests and the SQL migration</td>
+          </tr>
+          <tr>
+            <td class="metric">— web</td>
+            <td class="r num">4,075</td>
+            <td class="r num">2,182</td>
+            <td class="detail">11 pages vs 8</td>
+          </tr>
+          <tr>
+            <td class="metric">API route modules</td>
+            <td class="r num">8</td>
+            <td class="r num">6</td>
+            <td class="detail">Alma splits invites and docs into their own routers</td>
+          </tr>
+          <tr>
+            <td class="metric">Seeded tickets</td>
+            <td class="r num">310</td>
+            <td class="r num">220</td>
+            <td class="detail">brief asked for 200+; both clear it</td>
+          </tr>
+          <tr>
+            <td class="metric">Seeded users</td>
+            <td class="r num">14</td>
+            <td class="r num">11</td>
+            <td class="detail">brief asked for 10; both clear it</td>
+          </tr>
+          <tr>
+            <td class="metric">README lines</td>
+            <td class="r num">350</td>
+            <td class="r num">130</td>
+            <td class="detail">Alma documents 11 limitations; Devin documents 8</td>
+          </tr>
+          <tr>
+            <td class="metric">Commits</td>
+            <td class="r num">11</td>
+            <td class="r num lead lead-a">12</td>
+            <td class="detail">both incremental and meaningfully scoped — neither squashed</td>
+          </tr>
+          <tr>
+            <td class="metric">Lint (<code>--max-warnings=0</code>)</td>
+            <td class="r"><span class="pill pass">Clean</span></td>
+            <td class="r"><span class="pill pass">Clean</span></td>
+            <td class="detail">both pass</td>
+          </tr>
+          <tr>
+            <td class="metric">Typecheck</td>
+            <td class="r"><span class="pill pass">Clean</span></td>
+            <td class="r"><span class="pill pass">Clean</span></td>
+            <td class="detail">
+              Devin's needs the documented <code>prisma generate</code> first; it is in their README
+            </td>
+          </tr>
+          <tr>
+            <td class="metric">Production build</td>
+            <td class="r"><span class="pill pass">Builds</span></td>
+            <td class="r"><span class="pill pass">Builds</span></td>
+            <td class="detail">
+              Alma code-splits to 166/212/393 kB; Devin ships one 728 kB bundle
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================================================== TEST SUITES === -->
+  <section>
+    <div class="section-head">
+      <h2>Test suites, executed</h2>
+      <span class="tag">222 tests · 0 failures across both</span>
+    </div>
+    <p class="lede">
+      Both suites were run to completion against their own Postgres database. The brief asked for
+      unit tests on auth and the state machine plus at least five API integration tests —
+      <strong>both clear that bar comfortably</strong>. Everything above it is depth, not
+      compliance.
+    </p>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Area under test</th>
+            <th class="r">Alma</th>
+            <th class="r">Devin</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="metric">Auth — unit</td>
+            <td class="r num">15</td>
+            <td class="r num">7</td>
+            <td class="detail">brief's minimum: required. Both cover hashing and token handling</td>
+          </tr>
+          <tr>
+            <td class="metric">Ticket state machine — unit</td>
+            <td class="r num">20</td>
+            <td class="r num">6</td>
+            <td class="detail">brief's minimum: required</td>
+          </tr>
+          <tr>
+            <td class="metric">SLA rules — unit</td>
+            <td class="r num">9</td>
+            <td class="r num">3</td>
+            <td class="detail">breach predicate and windows</td>
+          </tr>
+          <tr>
+            <td class="metric">Tenancy — integration</td>
+            <td class="r num">19</td>
+            <td class="r num">7</td>
+            <td class="detail">both probe cross-tenant reads and writes</td>
+          </tr>
+          <tr>
+            <td class="metric">Tickets / CRUD / filters — integration</td>
+            <td class="r num">24</td>
+            <td class="r num">8</td>
+            <td class="detail">pagination, search, sorting</td>
+          </tr>
+          <tr>
+            <td class="metric">Auth flows — integration</td>
+            <td class="r num">13</td>
+            <td class="r num">6</td>
+            <td class="detail">signup, login, refresh rotation, invites</td>
+          </tr>
+          <tr>
+            <td class="metric">Analytics + audit — integration</td>
+            <td class="r num">8</td>
+            <td class="r num">5</td>
+            <td class="detail">Devin folds the SLA sweep into this file</td>
+          </tr>
+          <tr>
+            <td class="metric">Transitions — integration</td>
+            <td class="r num">15</td>
+            <td class="r num">—</td>
+            <td class="detail">Alma-only file; Devin covers transitions in its unit suite</td>
+          </tr>
+          <tr>
+            <td class="metric">RBAC — integration</td>
+            <td class="r num">40</td>
+            <td class="r num">—</td>
+            <td class="detail">Alma-only: every admin surface × all four principals</td>
+          </tr>
+          <tr>
+            <td class="metric">SLA sweep — integration</td>
+            <td class="r num">10</td>
+            <td class="r num">—</td>
+            <td class="detail">Alma-only file</td>
+          </tr>
+          <tr>
+            <td class="metric">OpenAPI route coverage</td>
+            <td class="r num">7</td>
+            <td class="r num">—</td>
+            <td class="detail">Alma-only: fails if a mounted route is undocumented</td>
+          </tr>
+          <tr style="border-top: 2px solid var(--line-strong)">
+            <td class="metric"><b>Total — all passing</b></td>
+            <td class="r num lead lead-a">180</td>
+            <td class="r num">42</td>
+            <td class="detail">no failures, no skips, on either side</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================================================== DIFFERENCES === -->
+  <section>
+    <div class="section-head">
+      <h2>Where they actually differ</h2>
+      <span class="tag">5 findings</span>
+    </div>
+    <p class="lede">
+      With both passing every probe, these are the decisions that separate them. Two are
+      substantive; three are legitimate taste.
+    </p>
+
+    <div class="diffs">
+      <article class="diff">
+        <header>
+          <h3>Tenant isolation is structural vs. by convention</h3>
+          <span class="pill crit">Substantive</span>
+        </header>
+        <div class="body">
+          <div class="split">
+            <div>
+              <p class="label">Alma</p>
+              <p class="val">
+                A Prisma client extension rewrites <em>every</em> operation on a tenant model,
+                injecting <code>orgId</code> last — so a spoofed filter is overridden, and a handler
+                that forgets the filter is still safe.
+              </p>
+            </div>
+            <div>
+              <p class="label">Devin</p>
+              <p class="val">
+                A <code>ticketScope()</code> helper returns a <code>where</code> fragment that each
+                handler spreads into its own query.
+              </p>
+            </div>
+          </div>
+          <p class="verdict-line">
+            <strong>Both return 404 on every cross-tenant probe today.</strong> The difference is
+            what happens to the next handler someone writes: Alma's fails closed automatically,
+            Devin's depends on the author remembering the helper. I verified Alma's directly by
+            issuing a deliberately unscoped query; I did not construct an equivalent escape for
+            Devin, so this is an architectural observation, not a demonstrated vulnerability.
+          </p>
+        </div>
+      </article>
+
+      <article class="diff">
+        <header>
+          <h3>Auth rate limiting keys on IP only vs. IP + email</h3>
+          <span class="pill crit">Substantive</span>
+        </header>
+        <div class="body">
+          <div class="split">
+            <div>
+              <p class="label">Alma</p>
+              <p class="val">
+                Keyed <code>ip:email</code>. During testing, hammering one account left every other
+                account on that IP able to sign in.
+              </p>
+            </div>
+            <div>
+              <p class="label">Devin</p>
+              <p class="val">
+                Default IP-only key. Hammering one account locked out <em>all</em> accounts from
+                that address — I hit this by accident and had to restart the server.
+              </p>
+            </div>
+          </div>
+          <p class="verdict-line">
+            <strong>Both satisfy the brief's "rate limiting on auth endpoints".</strong> It is a
+            real trade-off, not a bug: IP-only throttles credential-stuffing across many accounts
+            more aggressively, but behind office NAT or CGNAT one user's failures lock out everyone.
+            Found empirically, then confirmed in both codebases.
+          </p>
+        </div>
+      </article>
+
+      <article class="diff">
+        <header>
+          <h3>State-machine strictness</h3>
+          <span class="pill tie">Taste</span>
+        </header>
+        <div class="body">
+          <div class="split">
+            <div>
+              <p class="label">Alma</p>
+              <p class="val">
+                <code>OPEN → RESOLVED</code> is refused with 409. A ticket must pass through
+                IN_PROGRESS or WAITING_ON_CUSTOMER.
+              </p>
+            </div>
+            <div>
+              <p class="label">Devin</p>
+              <p class="val">
+                <code>OPEN → RESOLVED</code> is allowed — a deliberate edge in their transition
+                table.
+              </p>
+            </div>
+          </div>
+          <p class="verdict-line">
+            The brief's arrow diagram is ambiguous about whether intermediate states are mandatory.
+            <strong>Both readings are defensible</strong> and both refuse genuinely illegal edges
+            with 409. My first probe scored this against Devin; that was my error, and it is
+            corrected here.
+          </p>
+        </div>
+      </article>
+
+      <article class="diff">
+        <header>
+          <h3>Refused-transition status code</h3>
+          <span class="pill tie">Taste</span>
+        </header>
+        <div class="body">
+          <div class="split">
+            <div>
+              <p class="label">Alma</p>
+              <p class="val">403 <code>FORBIDDEN_TRANSITION</code> — legal edge, wrong actor.</p>
+            </div>
+            <div>
+              <p class="label">Devin</p>
+              <p class="val">
+                409 <code>TRANSITION_FORBIDDEN</code> — one code space for all refusals.
+              </p>
+            </div>
+          </div>
+          <p class="verdict-line">
+            The brief mandates 409 only for <em>invalid transitions</em> and is silent on the
+            authorisation case. <strong>Both are machine-readable and documented.</strong>
+          </p>
+        </div>
+      </article>
+
+      <article class="diff">
+        <header>
+          <h3>Analytics surface</h3>
+          <span class="pill tie">Taste</span>
+        </header>
+        <div class="body">
+          <div class="split">
+            <div>
+              <p class="label">Alma</p>
+              <p class="val">
+                Four endpoints (overview, per-day, per-agent, breach rate), a 7/30/90-day range
+                toggle, and median as well as mean first response.
+              </p>
+            </div>
+            <div>
+              <p class="label">Devin</p>
+              <p class="val">
+                One <code>/analytics/overview</code> returning totals, a 30-day series, per-agent
+                stats and breach-by-priority in a single payload.
+              </p>
+            </div>
+          </div>
+          <p class="verdict-line">
+            Both compute everything in Postgres, as required. Devin's is one round trip; Alma's is
+            more granular and cacheable.
+            <strong
+              >My probe's 404s against Devin here were my route names, not missing features.</strong
+            >
+          </p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ================================================== NOT VERIFIED === -->
+  <section>
+    <div class="section-head">
+      <h2>What I did not verify</h2>
+      <span class="tag">4 remaining gaps</span>
+    </div>
+    <div class="panel">
+      <ul class="notes">
+        <li>
+          <b>Neither Docker stack was run.</b> No Docker daemon on this machine. Both repos ship a
+          compose file and Dockerfiles; both were verified only as far as their production builds
+          and, for Alma, booting the compiled server from <code>dist/</code>.
+        </li>
+        <li>
+          <b>No load, concurrency or long-run testing.</b> Both realtime layers are single-process;
+          neither was tested with multiple replicas.
+        </li>
+        <li>
+          <b>Seed data differs</b>, so absolute counts (220 vs 140 tickets in org A) are not
+          comparable to each other — only each system's internal consistency was checked.
+        </li>
+        <li>
+          <b>Accessibility, mobile layout and browser-console cleanliness</b> were not
+          systematically audited on either UI.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ====================================================== METHOD === -->
+  <section>
+    <div class="section-head">
+      <h2>How this was run</h2>
+      <span class="tag">reproducible</span>
+    </div>
+    <div class="panel">
+      <ul class="notes">
+        <li>Both repos cloned fresh; dependencies installed from their own lockfiles.</li>
+        <li>
+          Each got its own Postgres database, migrated with its own committed migrations and seeded
+          with its own seed script.
+        </li>
+        <li>
+          Both APIs booted simultaneously — Alma on <code>:4000</code>, Devin on
+          <code>:4200</code> — and hit by the same Python probe script, adapted per repo only for
+          route names, response envelope and query-parameter spelling.
+        </li>
+        <li>
+          Both web apps were driven in a real browser: sign-in, ticket queue, filters, ticket
+          detail, dashboard, audit log, and a live comment posted from a second session to confirm
+          realtime propagation. <b>Both propagated without a refresh.</b>
+        </li>
+        <li>
+          The rate-limit probe fires 25 bad logins and must run last — it poisons any subsequent run
+          until the server restarts. Both were restarted between runs for the final numbers.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ====================================================== CLOSING === -->
+  <section>
+    <div class="section-head">
+      <h2>The honest read</h2>
+      <span class="tag">judgement, not measurement</span>
+    </div>
+    <div class="panel">
+      <p style="margin-top: 0; color: var(--ink-soft)">
+        On the brief as written, <strong>both builds are complete and correct</strong>. All eight
+        required features are present and working in both; all nineteen behavioural probes pass on
+        both; lint, typecheck and production builds are clean on both. Anyone expecting one of these
+        to fall over is going to be disappointed — the interesting result is how close they are.
+      </p>
+      <p style="color: var(--ink-soft)">
+        They separate on <strong>depth rather than function</strong>. Alma carries 4× the automated
+        tests, a tenant-isolation mechanism that fails closed rather than relying on convention, a
+        rate limiter that avoids collateral lockout, and a README that names eleven limitations
+        instead of eight. Devin reaches the same functional bar in roughly half the code, which is
+        its own kind of merit — less surface to maintain, and a consolidated analytics endpoint that
+        is arguably the better API design.
+      </p>
+      <p style="color: var(--ink-soft); margin-bottom: 0">
+        The gap I flagged in the first draft is now closed:
+        <strong>Devin's 42 tests were run and all 42 pass.</strong> That settles it — the remaining
+        distance is depth of coverage and two defensive choices, which is real but narrower than the
+        line counts suggest. Both entrants satisfy the brief. If you are picking a winner on the
+        spec alone, it is a draw; if you are picking on what you would rather inherit and extend,
+        the tie breaks on tests and on tenant isolation that cannot be forgotten.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    Alma · <span class="mono">github.com/almaorb/flowdesk-alma</span> — 11 commits, 180 tests (180
+    passing)<br />
+    Devin · <span class="mono">github.com/almaorb/flowdesk-devin</span> — 12 commits, 42 tests (42
+    passing)<br />
+    <span style="display: inline-block; margin-top: 0.75rem"
+      >Evaluation authored by the agent that built the Alma entry. Treat the measurements as
+      reproducible and the judgement as interested.</span
+    >
+  </footer>
+</main>
