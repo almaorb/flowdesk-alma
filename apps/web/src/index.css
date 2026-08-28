@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-ink-50 text-ink-900 antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'ss01';
+  }
+
+  ::selection {
+    @apply bg-accent-200/70;
+  }
+
+  /* A quieter scrollbar so dense tables do not feel noisy. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.ink.300') transparent;
+  }
+}
+
+@layer components {
+  .field-label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-wider text-ink-500;
+  }
+
+  .field {
+    @apply w-full rounded-lg border border-ink-200 bg-white px-3 py-2 text-sm text-ink-900
+      shadow-sm outline-none transition
+      placeholder:text-ink-400
+      focus:border-accent-500 focus:ring-2 focus:ring-accent-500/20
+      disabled:cursor-not-allowed disabled:bg-ink-100;
+  }
+
+  .card {
+    @apply rounded-xl border border-ink-200/80 bg-white shadow-card;
+  }
+
+  .table-head {
+    @apply sticky top-0 z-10 border-b border-ink-200 bg-ink-50/95 px-4 py-2.5 text-left text-[11px]
+      font-semibold uppercase tracking-wider text-ink-500 backdrop-blur;
+  }
+
+  .link {
+    @apply text-accent-700 underline-offset-2 hover:underline;
+  }
+}

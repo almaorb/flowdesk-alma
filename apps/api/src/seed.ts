@@ -377,8 +377,10 @@ async function main(): Promise<void> {
           action: 'TICKET_STATUS_CHANGED',
           entityType: 'Ticket',
           entityId: ticketId,
-          metadata: { from: 'OPEN', to: status === 'REOPENED' ? 'RESOLVED' : status },
-          createdAt: new Date((firstResponseAt ?? createdAt).getTime() + minutes(randInt(5, 240))),
+          metadata: { number: n, from: 'OPEN', to: status === 'REOPENED' ? 'RESOLVED' : status },
+          createdAt: new Date(
+            Math.min(NOW.getTime(), (firstResponseAt ?? createdAt).getTime() + minutes(randInt(5, 240))),
+          ),
         });
       }
 
