@@ -14,7 +14,13 @@ export function EmptyState({
   return (
     <div className="flex flex-col items-center justify-center gap-2 px-6 py-16 text-center">
       <div className="mb-1 flex h-10 w-10 items-center justify-center rounded-full bg-ink-100 text-ink-400">
-        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <svg
+          viewBox="0 0 24 24"
+          className="h-5 w-5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+        >
           <path d="M4 7h16M4 12h10M4 17h7" strokeLinecap="round" />
         </svg>
       </div>
@@ -50,7 +56,11 @@ export function ErrorState({ error, onRetry }: { error: unknown; onRetry?: () =>
 export function InlineError({ error }: { error: unknown }) {
   if (!error) return null;
   const message =
-    error instanceof ApiError ? error.message : error instanceof Error ? error.message : String(error);
+    error instanceof ApiError
+      ? error.message
+      : error instanceof Error
+        ? error.message
+        : String(error);
   return (
     <p
       role="alert"

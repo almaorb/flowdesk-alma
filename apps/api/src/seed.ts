@@ -59,26 +59,86 @@ const hours = (n: number) => minutes(60 * n);
 /* -------------------------------------------------------------- content -- */
 
 const TICKET_TEMPLATES: { title: string; body: string }[] = [
-  { title: 'Cannot log in after password reset', body: 'I reset my password from the email link, but the new password is rejected on the login screen. I have tried two browsers and an incognito window.' },
-  { title: 'Invoice #{n} shows the wrong tax rate', body: 'The invoice generated this morning applies 20% VAT to a zero-rated line item. Our finance team needs a corrected copy before month end.' },
-  { title: 'CSV export truncates at 1,000 rows', body: 'Exporting the full contact list only returns the first 1,000 rows. The UI does not warn that the export was truncated.' },
-  { title: 'Webhook deliveries failing with 502', body: 'Since roughly 09:00 UTC our webhook endpoint receives 502s from your side. Retries are also failing. Delivery ids are in the attached list.' },
-  { title: 'Mobile app crashes on the reports tab', body: 'Opening Reports on iOS 18 closes the app immediately. It reproduces on two devices; the web app is fine.' },
-  { title: 'Request: bulk-assign tickets to a team', body: 'We triage roughly 200 tickets a day and assign them one at a time. Could we select multiple tickets and assign them in one action?' },
-  { title: 'SSO users land on the wrong workspace', body: 'After signing in through Okta some users are dropped into the sandbox workspace instead of production.' },
-  { title: 'Search ignores accented characters', body: 'Searching for "Muller" does not return records for "Müller". Our German customer list is effectively unsearchable.' },
-  { title: 'Billing page spins forever on Safari', body: 'The billing page never finishes loading in Safari 18. Chrome and Firefox are unaffected. Console shows a failed request to /api/billing/summary.' },
-  { title: 'Duplicate notification emails', body: 'Every assignment notification arrives twice, a few seconds apart. Started after last week’s release.' },
-  { title: 'API rate limit hit unexpectedly', body: 'We are being throttled well below the documented 600 requests/minute. Could you confirm the limit applied to our account?' },
-  { title: 'Attachment upload fails above 8 MB', body: 'Uploads over about 8 MB fail with a generic error. The documented limit is 25 MB.' },
-  { title: 'Timezone shown as UTC on scheduled reports', body: 'Scheduled reports render timestamps in UTC even though the workspace is set to Europe/Berlin.' },
-  { title: 'Add a dark theme to the agent console', body: 'Our overnight team would like a dark theme. The current console is uncomfortable to read at night.' },
-  { title: 'Deleted user still appears in assignee list', body: 'We deactivated an agent last Friday, but their name is still offered when assigning a ticket.' },
-  { title: 'Slow ticket list with more than 50k tickets', body: 'The ticket list takes 8-12 seconds to load on our largest workspace. Filtering by status makes it worse.' },
-  { title: 'Password policy rejects valid passphrases', body: 'Long passphrases with spaces are rejected. Our security policy mandates passphrases.' },
-  { title: 'Cannot remove a tag from a closed ticket', body: 'Tag removal silently fails on closed tickets. No error is shown but the tag is still there after a refresh.' },
-  { title: 'Customer replies are not threading', body: 'Replies from customers create new tickets instead of appending to the original thread.' },
-  { title: 'Feature request: SLA pause during customer wait', body: 'While a ticket is waiting on the customer, the SLA clock should pause. Right now we breach SLAs while waiting on them.' },
+  {
+    title: 'Cannot log in after password reset',
+    body: 'I reset my password from the email link, but the new password is rejected on the login screen. I have tried two browsers and an incognito window.',
+  },
+  {
+    title: 'Invoice #{n} shows the wrong tax rate',
+    body: 'The invoice generated this morning applies 20% VAT to a zero-rated line item. Our finance team needs a corrected copy before month end.',
+  },
+  {
+    title: 'CSV export truncates at 1,000 rows',
+    body: 'Exporting the full contact list only returns the first 1,000 rows. The UI does not warn that the export was truncated.',
+  },
+  {
+    title: 'Webhook deliveries failing with 502',
+    body: 'Since roughly 09:00 UTC our webhook endpoint receives 502s from your side. Retries are also failing. Delivery ids are in the attached list.',
+  },
+  {
+    title: 'Mobile app crashes on the reports tab',
+    body: 'Opening Reports on iOS 18 closes the app immediately. It reproduces on two devices; the web app is fine.',
+  },
+  {
+    title: 'Request: bulk-assign tickets to a team',
+    body: 'We triage roughly 200 tickets a day and assign them one at a time. Could we select multiple tickets and assign them in one action?',
+  },
+  {
+    title: 'SSO users land on the wrong workspace',
+    body: 'After signing in through Okta some users are dropped into the sandbox workspace instead of production.',
+  },
+  {
+    title: 'Search ignores accented characters',
+    body: 'Searching for "Muller" does not return records for "Müller". Our German customer list is effectively unsearchable.',
+  },
+  {
+    title: 'Billing page spins forever on Safari',
+    body: 'The billing page never finishes loading in Safari 18. Chrome and Firefox are unaffected. Console shows a failed request to /api/billing/summary.',
+  },
+  {
+    title: 'Duplicate notification emails',
+    body: 'Every assignment notification arrives twice, a few seconds apart. Started after last week’s release.',
+  },
+  {
+    title: 'API rate limit hit unexpectedly',
+    body: 'We are being throttled well below the documented 600 requests/minute. Could you confirm the limit applied to our account?',
+  },
+  {
+    title: 'Attachment upload fails above 8 MB',
+    body: 'Uploads over about 8 MB fail with a generic error. The documented limit is 25 MB.',
+  },
+  {
+    title: 'Timezone shown as UTC on scheduled reports',
+    body: 'Scheduled reports render timestamps in UTC even though the workspace is set to Europe/Berlin.',
+  },
+  {
+    title: 'Add a dark theme to the agent console',
+    body: 'Our overnight team would like a dark theme. The current console is uncomfortable to read at night.',
+  },
+  {
+    title: 'Deleted user still appears in assignee list',
+    body: 'We deactivated an agent last Friday, but their name is still offered when assigning a ticket.',
+  },
+  {
+    title: 'Slow ticket list with more than 50k tickets',
+    body: 'The ticket list takes 8-12 seconds to load on our largest workspace. Filtering by status makes it worse.',
+  },
+  {
+    title: 'Password policy rejects valid passphrases',
+    body: 'Long passphrases with spaces are rejected. Our security policy mandates passphrases.',
+  },
+  {
+    title: 'Cannot remove a tag from a closed ticket',
+    body: 'Tag removal silently fails on closed tickets. No error is shown but the tag is still there after a refresh.',
+  },
+  {
+    title: 'Customer replies are not threading',
+    body: 'Replies from customers create new tickets instead of appending to the original thread.',
+  },
+  {
+    title: 'Feature request: SLA pause during customer wait',
+    body: 'While a ticket is waiting on the customer, the SLA clock should pause. Right now we breach SLAs while waiting on them.',
+  },
 ];
 
 const AGENT_REPLIES = [
@@ -133,7 +193,12 @@ interface OrgPlan {
   users: SeedUser[];
 }
 
-function buildUsers(domain: string, admins: string[], agents: string[], customers: string[]): SeedUser[] {
+function buildUsers(
+  domain: string,
+  admins: string[],
+  agents: string[],
+  customers: string[],
+): SeedUser[] {
   const make = (name: string, role: Role): SeedUser => ({
     id: id(),
     name,
@@ -265,8 +330,7 @@ async function main(): Promise<void> {
       });
 
       const isTerminal = status === 'RESOLVED' || status === 'CLOSED';
-      const assignee =
-        status === 'OPEN' && rand() < 0.55 ? null : pick(agents);
+      const assignee = status === 'OPEN' && rand() < 0.55 ? null : pick(agents);
 
       // Roughly one ticket in seven never gets a first response.
       const answered = assignee !== null && rand() > 0.14;
@@ -275,9 +339,10 @@ async function main(): Promise<void> {
       const deadline = slaDeadline(createdAt, priority);
       const slaWindowMs = deadline.getTime() - createdAt.getTime();
       // Most responses land inside the window; the tail runs past it.
-      const responseDelay = rand() < 0.78
-        ? Math.max(minutes(3), rand() * slaWindowMs * 0.85)
-        : slaWindowMs * (1.1 + rand() * 2.2);
+      const responseDelay =
+        rand() < 0.78
+          ? Math.max(minutes(3), rand() * slaWindowMs * 0.85)
+          : slaWindowMs * (1.1 + rand() * 2.2);
 
       let firstResponseAt: Date | null = answered
         ? new Date(createdAt.getTime() + responseDelay)
@@ -362,7 +427,11 @@ async function main(): Promise<void> {
             orgId: org.id,
             ticketId,
             authorId: fromAgent ? (responder?.id ?? admin.id) : customer.id,
-            body: internal ? pick(INTERNAL_NOTES) : fromAgent ? pick(AGENT_REPLIES) : pick(CUSTOMER_REPLIES),
+            body: internal
+              ? pick(INTERNAL_NOTES)
+              : fromAgent
+                ? pick(AGENT_REPLIES)
+                : pick(CUSTOMER_REPLIES),
             isInternal: internal,
             createdAt: cursor,
             updatedAt: cursor,
@@ -379,7 +448,10 @@ async function main(): Promise<void> {
           entityId: ticketId,
           metadata: { number: n, from: 'OPEN', to: status === 'REOPENED' ? 'RESOLVED' : status },
           createdAt: new Date(
-            Math.min(NOW.getTime(), (firstResponseAt ?? createdAt).getTime() + minutes(randInt(5, 240))),
+            Math.min(
+              NOW.getTime(),
+              (firstResponseAt ?? createdAt).getTime() + minutes(randInt(5, 240)),
+            ),
           ),
         });
       }
@@ -401,7 +473,12 @@ async function main(): Promise<void> {
           orgId: org.id,
           ticketId,
           uploadedById: customer.id,
-          filename: pick(['screenshot.png', 'har-export.har', 'invoice-1043.pdf', 'console-log.txt']),
+          filename: pick([
+            'screenshot.png',
+            'har-export.har',
+            'invoice-1043.pdf',
+            'console-log.txt',
+          ]),
           contentType: pick(['image/png', 'application/json', 'application/pdf', 'text/plain']),
           sizeBytes: randInt(12_000, 4_800_000),
           createdAt,
@@ -421,7 +498,9 @@ async function main(): Promise<void> {
   const breachedCount = tickets.filter((t) => t.slaBreached === true).length;
 
   console.log('');
-  console.log(`✔ ${tickets.length} tickets, ${comments.length} comments, ${attachments.length} attachments`);
+  console.log(
+    `✔ ${tickets.length} tickets, ${comments.length} comments, ${attachments.length} attachments`,
+  );
   console.log(`✔ ${auditLogs.length} audit rows, ${breachedCount} SLA breaches`);
   console.log('');
   console.log('Sign in with any of these (password for all: ' + DEMO_PASSWORD + ')');

@@ -11,7 +11,8 @@ export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = (location.state as { from?: { pathname: string } } | null)?.from?.pathname ?? '/tickets';
+  const from =
+    (location.state as { from?: { pathname: string } } | null)?.from?.pathname ?? '/tickets';
 
   const [email, setEmail] = useState('ada.lovelace@northwind.test');
   const [password, setPassword] = useState('Password123!');

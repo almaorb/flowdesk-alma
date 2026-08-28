@@ -99,7 +99,10 @@ export default function AnalyticsPage() {
               </Centered>
             ) : (
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={perDay.data ?? []} margin={{ top: 4, right: 8, bottom: 0, left: -18 }}>
+                <AreaChart
+                  data={perDay.data ?? []}
+                  margin={{ top: 4, right: 8, bottom: 0, left: -18 }}
+                >
                   <defs>
                     <linearGradient id="created" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%" stopColor="#6366f1" stopOpacity={0.35} />
@@ -161,7 +164,9 @@ export default function AnalyticsPage() {
         </section>
 
         <section className="card p-4">
-          <h2 className="text-sm font-semibold tracking-tight text-ink-900">Breach rate by priority</h2>
+          <h2 className="text-sm font-semibold tracking-tight text-ink-900">
+            Breach rate by priority
+          </h2>
           <p className="mb-3 text-xs text-ink-500">Share of tickets that missed first response.</p>
           <div className="h-64">
             {breachRate.isLoading ? (
@@ -179,7 +184,12 @@ export default function AnalyticsPage() {
                   margin={{ top: 4, right: 8, bottom: 0, left: -20 }}
                 >
                   <CartesianGrid stroke="#eceef2" vertical={false} />
-                  <XAxis dataKey="label" tick={{ fontSize: 11, fill: '#8592aa' }} tickLine={false} axisLine={false} />
+                  <XAxis
+                    dataKey="label"
+                    tick={{ fontSize: 11, fill: '#8592aa' }}
+                    tickLine={false}
+                    axisLine={false}
+                  />
                   <YAxis
                     tick={{ fontSize: 11, fill: '#8592aa' }}
                     tickLine={false}
@@ -211,7 +221,9 @@ export default function AnalyticsPage() {
 
       <section className="card mt-5">
         <div className="border-b border-ink-100 px-4 py-3">
-          <h2 className="text-sm font-semibold tracking-tight text-ink-900">First response by agent</h2>
+          <h2 className="text-sm font-semibold tracking-tight text-ink-900">
+            First response by agent
+          </h2>
           <p className="text-xs text-ink-500">
             Average and median time from ticket creation to that agent&rsquo;s first public reply.
           </p>
@@ -241,7 +253,9 @@ export default function AnalyticsPage() {
                 const slowest = Math.max(...rows.map((row) => row.avgFirstResponseMinutes), 1);
                 return rows.map((row) => (
                   <tr key={row.agentId} className="border-b border-ink-100 last:border-0">
-                    <td className="px-4 py-2.5 text-sm font-medium text-ink-800">{row.agentName}</td>
+                    <td className="px-4 py-2.5 text-sm font-medium text-ink-800">
+                      {row.agentName}
+                    </td>
                     <td className="px-4 py-2.5 text-right text-sm tabular-nums text-ink-600">
                       {row.ticketsAnswered}
                     </td>
@@ -291,7 +305,11 @@ function Stat({
           tone === 'danger' ? 'text-rose-600' : 'text-ink-900'
         }`}
       >
-        {loading ? <span className="inline-block h-7 w-16 animate-pulse-soft rounded bg-ink-100" /> : (value ?? '—')}
+        {loading ? (
+          <span className="inline-block h-7 w-16 animate-pulse-soft rounded bg-ink-100" />
+        ) : (
+          (value ?? '—')
+        )}
       </p>
       {hint ? <p className="mt-0.5 text-xs text-ink-400">{hint}</p> : null}
     </div>

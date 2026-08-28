@@ -38,7 +38,9 @@ const NAV: NavItem[] = [
   {
     to: '/audit',
     label: 'Audit log',
-    icon: icon('M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 104 0M9 12h6M9 16h4'),
+    icon: icon(
+      'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 104 0M9 12h6M9 16h4',
+    ),
     roles: ['ADMIN'],
   },
 ];
@@ -72,12 +74,20 @@ export function Layout() {
       <aside className="flex w-60 shrink-0 flex-col border-r border-ink-200 bg-white">
         <div className="flex items-center gap-2.5 px-4 py-4">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-600 text-white">
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.4">
+            <svg
+              viewBox="0 0 24 24"
+              className="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.4"
+            >
               <path d="M5 7h14M5 12h9M5 17h11" strokeLinecap="round" />
             </svg>
           </span>
           <div className="min-w-0">
-            <p className="text-sm font-semibold leading-tight tracking-tight text-ink-900">FlowDesk</p>
+            <p className="text-sm font-semibold leading-tight tracking-tight text-ink-900">
+              FlowDesk
+            </p>
             <p className="truncate text-[11px] leading-tight text-ink-500">{organization?.name}</p>
           </div>
         </div>
@@ -106,7 +116,9 @@ export function Layout() {
           <div className="flex items-center gap-2.5 px-1 pb-2.5">
             {user ? <Avatar name={user.name} id={user.id} /> : null}
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium leading-tight text-ink-900">{user?.name}</p>
+              <p className="truncate text-sm font-medium leading-tight text-ink-900">
+                {user?.name}
+              </p>
               <p className="truncate text-[11px] leading-tight text-ink-500">{user?.email}</p>
             </div>
           </div>

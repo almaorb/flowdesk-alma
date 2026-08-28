@@ -10,7 +10,12 @@ export function asyncHandler(
   };
 }
 
-export function paginate<T>(data: T[], total: number, page: number, pageSize: number): Paginated<T> {
+export function paginate<T>(
+  data: T[],
+  total: number,
+  page: number,
+  pageSize: number,
+): Paginated<T> {
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   return {
     data,

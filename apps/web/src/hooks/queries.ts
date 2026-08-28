@@ -194,7 +194,8 @@ export function useDeleteTicket() {
 export function useInvites() {
   return useQuery({
     queryKey: queryKeys.invites,
-    queryFn: () => api.get<{ data: (InviteDto & { url: string })[] }>('/invites').then((r) => r.data),
+    queryFn: () =>
+      api.get<{ data: (InviteDto & { url: string })[] }>('/invites').then((r) => r.data),
   });
 }
 

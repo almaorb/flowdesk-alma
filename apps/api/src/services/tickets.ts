@@ -15,14 +15,15 @@ export function visibilityWhere(actor: AuthContext): Prisma.TicketWhereInput {
   return actor.role === 'CUSTOMER' ? { customerId: actor.userId } : {};
 }
 
-const SORT_COLUMNS: Record<ListTicketsQuery['sort'], keyof Prisma.TicketOrderByWithRelationInput> = {
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  priority: 'priority',
-  status: 'status',
-  title: 'title',
-  slaDeadline: 'slaDeadline',
-};
+const SORT_COLUMNS: Record<ListTicketsQuery['sort'], keyof Prisma.TicketOrderByWithRelationInput> =
+  {
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    priority: 'priority',
+    status: 'status',
+    title: 'title',
+    slaDeadline: 'slaDeadline',
+  };
 
 export function buildTicketWhere(
   query: ListTicketsQuery,

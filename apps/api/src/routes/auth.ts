@@ -38,7 +38,10 @@ const refreshCookieOptions = {
 async function buildSession(userId: string, userAgent?: string): Promise<AuthSessionDto> {
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    select: { ...userSelect, organization: { select: { id: true, name: true, slug: true, createdAt: true } } },
+    select: {
+      ...userSelect,
+      organization: { select: { id: true, name: true, slug: true, createdAt: true } },
+    },
   });
   if (!user) throw unauthenticated('Account no longer exists.');
 
@@ -71,7 +74,10 @@ authRouter.post(
   asyncHandler(async (req, res) => {
     const input = parseBody(signupSchema, req);
 
-    const existing = await prisma.user.findUnique({ where: { email: input.email }, select: { id: true } });
+    const existing = await prisma.user.findUnique({
+      where: { email: input.email },
+      select: { id: true },
+    });
     if (existing) throw conflict('That email address is already registered.', 'EMAIL_TAKEN');
 
     const passwordHash = await hashPassword(input.password);
@@ -86,7 +92,8 @@ authRouter.post(
           data: { name: input.organizationName, slug },
         });
       }
-      if (!organization) throw conflict('Could not allocate an organization slug. Try another name.');
+      if (!organization)
+        throw conflict('Could not allocate an organization slug. Try another name.');
 
       const created = await tx.user.create({
         data: {
@@ -251,13 +258,18 @@ authRouter.post(
       },
     });
 
-    if (!invite || invite.revokedAt) throw new AppError(400, 'INVITE_INVALID', 'This invite link is not valid.');
-    if (invite.acceptedAt) throw new AppError(400, 'INVITE_INVALID', 'This invite has already been used.');
+    if (!invite || invite.revokedAt)
+      throw new AppError(400, 'INVITE_INVALID', 'This invite link is not valid.');
+    if (invite.acceptedAt)
+      throw new AppError(400, 'INVITE_INVALID', 'This invite has already been used.');
     if (invite.expiresAt.getTime() <= Date.now()) {
       throw new AppError(400, 'INVITE_EXPIRED', 'This invite link has expired.');
     }
 
-    const existing = await prisma.user.findUnique({ where: { email: invite.email }, select: { id: true } });
+    const existing = await prisma.user.findUnique({
+      where: { email: invite.email },
+      select: { id: true },
+    });
     if (existing) throw conflict('That email address is already registered.', 'EMAIL_TAKEN');
 
     const passwordHash = await hashPassword(input.password);

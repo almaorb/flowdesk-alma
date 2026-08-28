@@ -18,7 +18,11 @@ export function upsertComment(
 ): CommentDto[] {
   const pruned = comments.filter((comment) => {
     if (optimisticId && comment.id === optimisticId) return false;
-    if (isOptimistic(comment) && comment.author?.id === incoming.author?.id && comment.body === incoming.body) {
+    if (
+      isOptimistic(comment) &&
+      comment.author?.id === incoming.author?.id &&
+      comment.body === incoming.body
+    ) {
       return false;
     }
     return true;

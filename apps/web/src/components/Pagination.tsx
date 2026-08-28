@@ -23,7 +23,8 @@ export function Pagination({
             <span className="font-semibold text-ink-700">
               {first}–{last}
             </span>{' '}
-            of <span className="font-semibold text-ink-700">{meta.total.toLocaleString()}</span> {label}
+            of <span className="font-semibold text-ink-700">{meta.total.toLocaleString()}</span>{' '}
+            {label}
           </>
         )}
       </p>

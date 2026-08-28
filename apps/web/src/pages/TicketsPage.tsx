@@ -6,7 +6,14 @@ import { useAuth } from '../auth/AuthContext';
 import { useTags, useTickets, useUsers } from '../hooks/queries';
 import { formatRelative } from '../lib/format';
 import { PageHeader } from '../components/Layout';
-import { PRIORITY_LABELS, PriorityBadge, SlaBadge, STATUS_LABELS, StatusBadge, TagChip } from '../components/Badges';
+import {
+  PRIORITY_LABELS,
+  PriorityBadge,
+  SlaBadge,
+  STATUS_LABELS,
+  StatusBadge,
+  TagChip,
+} from '../components/Badges';
 import { UserCell } from '../components/Avatar';
 import { Button } from '../components/Button';
 import { Pagination } from '../components/Pagination';
@@ -53,9 +60,14 @@ export default function TicketsPage() {
   const tags = useTags();
 
   const agentOptions = (agents.data?.data ?? []).filter((user) => user.role !== 'CUSTOMER');
-  const activeFilterCount = ['status', 'priority', 'assigneeId', 'tagId', 'q', 'slaBreached'].filter(
-    (key) => params.get(key),
-  ).length;
+  const activeFilterCount = [
+    'status',
+    'priority',
+    'assigneeId',
+    'tagId',
+    'q',
+    'slaBreached',
+  ].filter((key) => params.get(key)).length;
 
   function update(next: Record<string, string | undefined>, resetPage = true) {
     const merged = new URLSearchParams(params);
@@ -97,7 +109,8 @@ export default function TicketsPage() {
               placeholder="Search titles and descriptions…"
               defaultValue={filters.q ?? ''}
               onKeyDown={(event) => {
-                if (event.key === 'Enter') update({ q: event.currentTarget.value.trim() || undefined });
+                if (event.key === 'Enter')
+                  update({ q: event.currentTarget.value.trim() || undefined });
               }}
               onBlur={(event) => update({ q: event.currentTarget.value.trim() || undefined })}
             />
@@ -215,15 +228,30 @@ export default function TicketsPage() {
                 <th className="table-head w-20">#</th>
                 <th className="table-head">Subject</th>
                 <th className="table-head w-40">
-                  <SortButton column="status" filters={filters} onSort={toggleSort} label="Status" />
+                  <SortButton
+                    column="status"
+                    filters={filters}
+                    onSort={toggleSort}
+                    label="Status"
+                  />
                 </th>
                 <th className="table-head w-28">
-                  <SortButton column="priority" filters={filters} onSort={toggleSort} label="Priority" />
+                  <SortButton
+                    column="priority"
+                    filters={filters}
+                    onSort={toggleSort}
+                    label="Priority"
+                  />
                 </th>
                 <th className="table-head w-44">Assignee</th>
                 <th className="table-head w-40">SLA</th>
                 <th className="table-head w-32">
-                  <SortButton column="createdAt" filters={filters} onSort={toggleSort} label="Created" />
+                  <SortButton
+                    column="createdAt"
+                    filters={filters}
+                    onSort={toggleSort}
+                    label="Created"
+                  />
                 </th>
               </tr>
             </thead>
@@ -244,7 +272,9 @@ export default function TicketsPage() {
                       description="Try widening the search, or clear the filters to see the whole queue."
                       action={
                         activeFilterCount > 0 ? (
-                          <Button onClick={() => setParams({}, { replace: true })}>Clear filters</Button>
+                          <Button onClick={() => setParams({}, { replace: true })}>
+                            Clear filters
+                          </Button>
                         ) : (
                           <Button variant="primary" onClick={() => setCreating(true)}>
                             Create the first ticket
@@ -321,7 +351,9 @@ function TicketRow({ ticket }: { ticket: TicketDto }) {
             {ticket.title}
           </span>
           <span className="mt-0.5 flex items-center gap-1.5">
-            <span className="truncate text-xs text-ink-500">{ticket.customer?.name ?? 'Unknown customer'}</span>
+            <span className="truncate text-xs text-ink-500">
+              {ticket.customer?.name ?? 'Unknown customer'}
+            </span>
             {ticket.commentCount > 0 ? (
               <span className="text-xs text-ink-400">· {ticket.commentCount} replies</span>
             ) : null}

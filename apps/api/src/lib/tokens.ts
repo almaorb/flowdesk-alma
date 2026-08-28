@@ -21,12 +21,16 @@ interface RefreshClaims {
 const ISSUER = 'flowdesk';
 
 export function signAccessToken(claims: AccessTokenClaims): string {
-  return jwt.sign({ orgId: claims.orgId, role: claims.role, email: claims.email }, env.JWT_ACCESS_SECRET, {
-    subject: claims.sub,
-    issuer: ISSUER,
-    audience: 'flowdesk-api',
-    expiresIn: env.ACCESS_TOKEN_TTL_SECONDS,
-  });
+  return jwt.sign(
+    { orgId: claims.orgId, role: claims.role, email: claims.email },
+    env.JWT_ACCESS_SECRET,
+    {
+      subject: claims.sub,
+      issuer: ISSUER,
+      audience: 'flowdesk-api',
+      expiresIn: env.ACCESS_TOKEN_TTL_SECONDS,
+    },
+  );
 }
 
 export function verifyAccessToken(token: string): AccessTokenClaims {
@@ -60,12 +64,16 @@ export async function issueRefreshToken(userId: string, userAgent?: string): Pro
   const jti = randomBytes(24).toString('base64url');
   const expiresAt = new Date(Date.now() + env.REFRESH_TOKEN_TTL_DAYS * 24 * 60 * 60 * 1000);
 
-  const token = jwt.sign({ jti, type: 'refresh' } satisfies Omit<RefreshClaims, 'sub'>, env.JWT_REFRESH_SECRET, {
-    subject: userId,
-    issuer: ISSUER,
-    audience: 'flowdesk-refresh',
-    expiresIn: `${env.REFRESH_TOKEN_TTL_DAYS}d`,
-  });
+  const token = jwt.sign(
+    { jti, type: 'refresh' } satisfies Omit<RefreshClaims, 'sub'>,
+    env.JWT_REFRESH_SECRET,
+    {
+      subject: userId,
+      issuer: ISSUER,
+      audience: 'flowdesk-refresh',
+      expiresIn: `${env.REFRESH_TOKEN_TTL_DAYS}d`,
+    },
+  );
 
   await prisma.refreshToken.create({
     data: {

@@ -76,12 +76,18 @@ export default function AuditPage() {
               ) : (logs.data?.data.length ?? 0) === 0 ? (
                 <tr>
                   <td colSpan={5}>
-                    <EmptyState title="No audit entries" description="Nothing has been recorded for this filter." />
+                    <EmptyState
+                      title="No audit entries"
+                      description="Nothing has been recorded for this filter."
+                    />
                   </td>
                 </tr>
               ) : (
                 logs.data?.data.map((entry) => (
-                  <tr key={entry.id} className="border-b border-ink-100 last:border-0 hover:bg-ink-50/60">
+                  <tr
+                    key={entry.id}
+                    className="border-b border-ink-100 last:border-0 hover:bg-ink-50/60"
+                  >
                     <td className="px-4 py-2.5">
                       <span
                         className={`inline-flex rounded px-1.5 py-0.5 font-mono text-[11px] font-semibold ring-1 ring-inset ${
@@ -115,7 +121,10 @@ export default function AuditPage() {
                     <td className="max-w-0 truncate px-4 py-2.5 font-mono text-[11px] text-ink-500">
                       {entry.metadata ? JSON.stringify(entry.metadata) : '—'}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-2.5 text-xs text-ink-500" title={formatDateTime(entry.createdAt)}>
+                    <td
+                      className="whitespace-nowrap px-4 py-2.5 text-xs text-ink-500"
+                      title={formatDateTime(entry.createdAt)}
+                    >
                       {formatRelative(entry.createdAt)}
                     </td>
                   </tr>
@@ -124,7 +133,9 @@ export default function AuditPage() {
             </tbody>
           </table>
         </div>
-        {logs.data ? <Pagination meta={logs.data.meta} label="entries" onPageChange={setPage} /> : null}
+        {logs.data ? (
+          <Pagination meta={logs.data.meta} label="entries" onPageChange={setPage} />
+        ) : null}
       </div>
     </div>
   );

@@ -1,4 +1,10 @@
-import { ERROR_CODES, PRIORITIES, ROLES, TICKET_SORT_FIELDS, TICKET_STATUSES } from '@flowdesk/shared';
+import {
+  ERROR_CODES,
+  PRIORITIES,
+  ROLES,
+  TICKET_SORT_FIELDS,
+  TICKET_STATUSES,
+} from '@flowdesk/shared';
 
 const ref = (name: string) => ({ $ref: `#/components/schemas/${name}` });
 
@@ -289,7 +295,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
           tags: ['System'],
           summary: 'Liveness and database probe',
           security: [],
-          responses: { 200: { description: 'Service is healthy' }, 503: errorResponse('Database unreachable') },
+          responses: {
+            200: { description: 'Service is healthy' },
+            503: errorResponse('Database unreachable'),
+          },
         },
       },
       '/api/auth/signup': {
@@ -315,7 +324,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
             },
           },
           responses: {
-            201: { description: 'Session', content: { 'application/json': { schema: ref('AuthSession') } } },
+            201: {
+              description: 'Session',
+              content: { 'application/json': { schema: ref('AuthSession') } },
+            },
             400: errorResponse('VALIDATION_ERROR'),
             409: errorResponse('EMAIL_TAKEN'),
             429: errorResponse('RATE_LIMITED'),
@@ -343,7 +355,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
             },
           },
           responses: {
-            200: { description: 'Session', content: { 'application/json': { schema: ref('AuthSession') } } },
+            200: {
+              description: 'Session',
+              content: { 'application/json': { schema: ref('AuthSession') } },
+            },
             401: errorResponse('INVALID_CREDENTIALS'),
             429: errorResponse('RATE_LIMITED'),
           },
@@ -362,7 +377,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
             },
           },
           responses: {
-            200: { description: 'Session', content: { 'application/json': { schema: ref('AuthSession') } } },
+            200: {
+              description: 'Session',
+              content: { 'application/json': { schema: ref('AuthSession') } },
+            },
             401: errorResponse('UNAUTHENTICATED'),
           },
         },
@@ -379,7 +397,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
         post: {
           tags: ['Auth'],
           summary: 'Revoke every session for the caller',
-          responses: { 204: { description: 'All sessions revoked' }, 401: errorResponse('UNAUTHENTICATED') },
+          responses: {
+            204: { description: 'All sessions revoked' },
+            401: errorResponse('UNAUTHENTICATED'),
+          },
         },
       },
       '/api/auth/me': {
@@ -424,7 +445,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
             },
           },
           responses: {
-            201: { description: 'Session', content: { 'application/json': { schema: ref('AuthSession') } } },
+            201: {
+              description: 'Session',
+              content: { 'application/json': { schema: ref('AuthSession') } },
+            },
             400: errorResponse('INVITE_INVALID / INVITE_EXPIRED'),
             409: errorResponse('EMAIL_TAKEN'),
           },
@@ -437,7 +461,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
           security: [],
           parameters: [queryParam('token', { type: 'string' }, 'Invite token', 'path')],
           responses: {
-            200: { description: 'Invite', content: { 'application/json': { schema: ref('PublicInvite') } } },
+            200: {
+              description: 'Invite',
+              content: { 'application/json': { schema: ref('PublicInvite') } },
+            },
             400: errorResponse('INVITE_INVALID / INVITE_EXPIRED'),
             404: errorResponse('INVITE_INVALID'),
           },
@@ -449,8 +476,16 @@ export function buildOpenApiDocument(serverUrl = '/') {
           summary: 'List tickets (server-side filter, search, sort, paginate)',
           parameters: [
             queryParam('page', { type: 'integer', minimum: 1, default: 1 }, 'Page number'),
-            queryParam('pageSize', { type: 'integer', minimum: 1, maximum: 100, default: 20 }, 'Rows per page'),
-            queryParam('status', { type: 'string' }, `Comma-separated: ${TICKET_STATUSES.join(',')}`),
+            queryParam(
+              'pageSize',
+              { type: 'integer', minimum: 1, maximum: 100, default: 20 },
+              'Rows per page',
+            ),
+            queryParam(
+              'status',
+              { type: 'string' },
+              `Comma-separated: ${TICKET_STATUSES.join(',')}`,
+            ),
             queryParam('priority', { type: 'string' }, `Comma-separated: ${PRIORITIES.join(',')}`),
             queryParam('assigneeId', { type: 'string' }, 'User id, or "unassigned"'),
             queryParam('customerId', { type: 'string' }, 'Customer user id'),
@@ -461,7 +496,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
             queryParam('order', { type: 'string', enum: ['asc', 'desc'] }, 'Sort direction'),
           ],
           responses: {
-            200: { description: 'Page of tickets', content: { 'application/json': { schema: paginatedOf('Ticket') } } },
+            200: {
+              description: 'Page of tickets',
+              content: { 'application/json': { schema: paginatedOf('Ticket') } },
+            },
             401: errorResponse('UNAUTHENTICATED'),
           },
         },
@@ -488,7 +526,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
             },
           },
           responses: {
-            201: { description: 'Created', content: { 'application/json': { schema: ref('Ticket') } } },
+            201: {
+              description: 'Created',
+              content: { 'application/json': { schema: ref('Ticket') } },
+            },
             400: errorResponse('VALIDATION_ERROR'),
             403: errorResponse('FORBIDDEN'),
           },
@@ -500,7 +541,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
           tags: ['Tickets'],
           summary: 'Fetch one ticket with its thread',
           responses: {
-            200: { description: 'Ticket', content: { 'application/json': { schema: ref('TicketDetail') } } },
+            200: {
+              description: 'Ticket',
+              content: { 'application/json': { schema: ref('TicketDetail') } },
+            },
             404: errorResponse('NOT_FOUND (also returned for another tenant’s ticket)'),
           },
         },
@@ -525,7 +569,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
             },
           },
           responses: {
-            200: { description: 'Updated', content: { 'application/json': { schema: ref('Ticket') } } },
+            200: {
+              description: 'Updated',
+              content: { 'application/json': { schema: ref('Ticket') } },
+            },
             400: errorResponse('VALIDATION_ERROR'),
             403: errorResponse('FORBIDDEN'),
             404: errorResponse('NOT_FOUND'),
@@ -534,7 +581,11 @@ export function buildOpenApiDocument(serverUrl = '/') {
         delete: {
           tags: ['Tickets'],
           summary: 'Delete a ticket (ADMIN only)',
-          responses: { 204: { description: 'Deleted' }, 403: errorResponse('FORBIDDEN'), 404: errorResponse('NOT_FOUND') },
+          responses: {
+            204: { description: 'Deleted' },
+            403: errorResponse('FORBIDDEN'),
+            404: errorResponse('NOT_FOUND'),
+          },
         },
       },
       '/api/tickets/{id}/transition': {
@@ -562,7 +613,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
             },
           },
           responses: {
-            200: { description: 'Updated', content: { 'application/json': { schema: ref('Ticket') } } },
+            200: {
+              description: 'Updated',
+              content: { 'application/json': { schema: ref('Ticket') } },
+            },
             403: errorResponse('FORBIDDEN_TRANSITION'),
             404: errorResponse('NOT_FOUND'),
             409: errorResponse('INVALID_TRANSITION'),
@@ -579,7 +633,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
               description: 'Comments',
               content: {
                 'application/json': {
-                  schema: { type: 'object', properties: { data: { type: 'array', items: ref('Comment') } } },
+                  schema: {
+                    type: 'object',
+                    properties: { data: { type: 'array', items: ref('Comment') } },
+                  },
                 },
               },
             },
@@ -605,7 +662,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
             },
           },
           responses: {
-            201: { description: 'Created', content: { 'application/json': { schema: ref('Comment') } } },
+            201: {
+              description: 'Created',
+              content: { 'application/json': { schema: ref('Comment') } },
+            },
             400: errorResponse('VALIDATION_ERROR'),
             404: errorResponse('NOT_FOUND'),
           },
@@ -634,7 +694,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
             },
           },
           responses: {
-            201: { description: 'Created', content: { 'application/json': { schema: ref('Attachment') } } },
+            201: {
+              description: 'Created',
+              content: { 'application/json': { schema: ref('Attachment') } },
+            },
             400: errorResponse('VALIDATION_ERROR'),
           },
         },
@@ -661,7 +724,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
             queryParam('pageSize', { type: 'integer' }, 'Rows per page'),
           ],
           responses: {
-            200: { description: 'Page of users', content: { 'application/json': { schema: paginatedOf('User') } } },
+            200: {
+              description: 'Page of users',
+              content: { 'application/json': { schema: paginatedOf('User') } },
+            },
           },
         },
       },
@@ -694,7 +760,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
             },
           },
           responses: {
-            200: { description: 'Updated', content: { 'application/json': { schema: ref('User') } } },
+            200: {
+              description: 'Updated',
+              content: { 'application/json': { schema: ref('User') } },
+            },
             400: errorResponse('VALIDATION_ERROR'),
             403: errorResponse('FORBIDDEN'),
           },
@@ -709,7 +778,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
               description: 'Tags',
               content: {
                 'application/json': {
-                  schema: { type: 'object', properties: { data: { type: 'array', items: ref('Tag') } } },
+                  schema: {
+                    type: 'object',
+                    properties: { data: { type: 'array', items: ref('Tag') } },
+                  },
                 },
               },
             },
@@ -731,7 +803,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
             },
           },
           responses: {
-            201: { description: 'Created', content: { 'application/json': { schema: ref('Tag') } } },
+            201: {
+              description: 'Created',
+              content: { 'application/json': { schema: ref('Tag') } },
+            },
             409: errorResponse('CONFLICT'),
           },
         },
@@ -753,7 +828,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
               description: 'Invites',
               content: {
                 'application/json': {
-                  schema: { type: 'object', properties: { data: { type: 'array', items: ref('Invite') } } },
+                  schema: {
+                    type: 'object',
+                    properties: { data: { type: 'array', items: ref('Invite') } },
+                  },
                 },
               },
             },
@@ -778,7 +856,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
             },
           },
           responses: {
-            201: { description: 'Created', content: { 'application/json': { schema: ref('Invite') } } },
+            201: {
+              description: 'Created',
+              content: { 'application/json': { schema: ref('Invite') } },
+            },
             409: errorResponse('EMAIL_TAKEN / CONFLICT'),
           },
         },
@@ -797,7 +878,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
           summary: 'Headline counters (ADMIN only)',
           parameters: [queryParam('days', { type: 'integer', default: 30 }, 'Window in days')],
           responses: {
-            200: { description: 'Overview', content: { 'application/json': { schema: ref('AnalyticsOverview') } } },
+            200: {
+              description: 'Overview',
+              content: { 'application/json': { schema: ref('AnalyticsOverview') } },
+            },
             403: errorResponse('FORBIDDEN'),
           },
         },
@@ -874,7 +958,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
             queryParam('entityType', { type: 'string' }, 'Filter by entity type'),
           ],
           responses: {
-            200: { description: 'Page of audit rows', content: { 'application/json': { schema: paginatedOf('AuditLog') } } },
+            200: {
+              description: 'Page of audit rows',
+              content: { 'application/json': { schema: paginatedOf('AuditLog') } },
+            },
             403: errorResponse('FORBIDDEN'),
           },
         },
@@ -888,7 +975,10 @@ export function buildOpenApiDocument(serverUrl = '/') {
               description: 'Actions',
               content: {
                 'application/json': {
-                  schema: { type: 'object', properties: { data: { type: 'array', items: { type: 'string' } } } },
+                  schema: {
+                    type: 'object',
+                    properties: { data: { type: 'array', items: { type: 'string' } } },
+                  },
                 },
               },
             },

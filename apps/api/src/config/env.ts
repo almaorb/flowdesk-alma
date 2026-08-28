@@ -15,7 +15,9 @@ for (const candidate of [path.join(packageRoot, '.env'), path.join(process.cwd()
 
 const booleanish = z
   .union([z.boolean(), z.string()])
-  .transform((v) => (typeof v === 'boolean' ? v : ['1', 'true', 'yes', 'on'].includes(v.trim().toLowerCase())));
+  .transform((v) =>
+    typeof v === 'boolean' ? v : ['1', 'true', 'yes', 'on'].includes(v.trim().toLowerCase()),
+  );
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
@@ -45,9 +47,17 @@ const envSchema = z.object({
   SLA_JOB_INTERVAL_MS: z.coerce.number().int().min(1_000).max(3_600_000).default(60_000),
   SLA_JOB_ENABLED: booleanish.default(true),
 
-  AUTH_RATE_LIMIT_WINDOW_MS: z.coerce.number().int().min(1_000).default(15 * 60 * 1000),
+  AUTH_RATE_LIMIT_WINDOW_MS: z.coerce
+    .number()
+    .int()
+    .min(1_000)
+    .default(15 * 60 * 1000),
   AUTH_RATE_LIMIT_MAX: z.coerce.number().int().min(1).default(20),
-  API_RATE_LIMIT_WINDOW_MS: z.coerce.number().int().min(1_000).default(60 * 1000),
+  API_RATE_LIMIT_WINDOW_MS: z.coerce
+    .number()
+    .int()
+    .min(1_000)
+    .default(60 * 1000),
   API_RATE_LIMIT_MAX: z.coerce.number().int().min(1).default(600),
 });
 
@@ -70,7 +80,10 @@ function loadEnv(): Env {
   const env = parsed.data;
 
   if (env.NODE_ENV === 'production') {
-    if (INSECURE_DEFAULTS.has(env.JWT_ACCESS_SECRET) || INSECURE_DEFAULTS.has(env.JWT_REFRESH_SECRET)) {
+    if (
+      INSECURE_DEFAULTS.has(env.JWT_ACCESS_SECRET) ||
+      INSECURE_DEFAULTS.has(env.JWT_REFRESH_SECRET)
+    ) {
       throw new Error(
         'Refusing to start in production with the example JWT secrets. Set JWT_ACCESS_SECRET and JWT_REFRESH_SECRET.',
       );

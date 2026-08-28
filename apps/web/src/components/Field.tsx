@@ -1,5 +1,10 @@
 import clsx from 'clsx';
-import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from 'react';
+import type {
+  InputHTMLAttributes,
+  ReactNode,
+  SelectHTMLAttributes,
+  TextareaHTMLAttributes,
+} from 'react';
 import { useId } from 'react';
 
 function Wrapper({
@@ -48,7 +53,11 @@ export function TextField({
         id={id}
         {...rest}
         aria-invalid={error ? true : undefined}
-        className={clsx('field', error && 'border-rose-400 focus:border-rose-500 focus:ring-rose-500/20', className)}
+        className={clsx(
+          'field',
+          error && 'border-rose-400 focus:border-rose-500 focus:ring-rose-500/20',
+          className,
+        )}
       />
     </Wrapper>
   );
@@ -60,7 +69,11 @@ export function TextAreaField({
   hint,
   className,
   ...rest
-}: TextareaHTMLAttributes<HTMLTextAreaElement> & { label?: string; error?: string; hint?: string }) {
+}: TextareaHTMLAttributes<HTMLTextAreaElement> & {
+  label?: string;
+  error?: string;
+  hint?: string;
+}) {
   const id = useId();
   return (
     <Wrapper label={label} error={error} hint={hint} htmlFor={id}>

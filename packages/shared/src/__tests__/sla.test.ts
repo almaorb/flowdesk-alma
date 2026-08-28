@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { PRIORITIES, SLA_RESPONSE_MS, isSlaBreached, msUntilBreach, slaDeadline } from '../index.js';
+import {
+  PRIORITIES,
+  SLA_RESPONSE_MS,
+  isSlaBreached,
+  msUntilBreach,
+  slaDeadline,
+} from '../index.js';
 
 const HOUR = 60 * 60 * 1000;
 const base = new Date('2026-01-01T00:00:00.000Z');
@@ -41,9 +47,9 @@ describe('isSlaBreached', () => {
   it('does not breach when the agent answered in time, however late it is now', () => {
     const firstResponseAt = new Date(base.getTime() + 45 * 60 * 1000);
     const now = new Date(base.getTime() + 500 * HOUR);
-    expect(
-      isSlaBreached({ createdAt: base, priority: 'URGENT', firstResponseAt, now }),
-    ).toBe(false);
+    expect(isSlaBreached({ createdAt: base, priority: 'URGENT', firstResponseAt, now })).toBe(
+      false,
+    );
   });
 
   it('breaches when the agent answered after the deadline', () => {

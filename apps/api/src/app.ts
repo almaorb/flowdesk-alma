@@ -54,10 +54,14 @@ export function createApp(): Express {
   app.use('/api', apiLimiter);
 
   app.get('/api/health', (_req, res) => {
-    void prisma
-      .$queryRaw`SELECT 1`
+    void prisma.$queryRaw`SELECT 1`
       .then(() => {
-        res.json({ status: 'ok', service: 'flowdesk-api', database: 'up', time: new Date().toISOString() });
+        res.json({
+          status: 'ok',
+          service: 'flowdesk-api',
+          database: 'up',
+          time: new Date().toISOString(),
+        });
       })
       .catch(() => {
         res.status(503).json({

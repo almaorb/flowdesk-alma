@@ -188,12 +188,19 @@ ticketsRouter.patch(
     if (input.description !== undefined && input.description !== existing.description) {
       changed.push('description');
     }
-    if (input.priority !== undefined && input.priority !== existing.priority) changed.push('priority');
-    if (input.assigneeId !== undefined && (input.assigneeId ?? null) !== (existing.assignee?.id ?? null)) {
+    if (input.priority !== undefined && input.priority !== existing.priority)
+      changed.push('priority');
+    if (
+      input.assigneeId !== undefined &&
+      (input.assigneeId ?? null) !== (existing.assignee?.id ?? null)
+    ) {
       changed.push('assigneeId');
     }
     if (tagIds) {
-      const before = existing.tags.map((t) => t.tag.id).sort().join(',');
+      const before = existing.tags
+        .map((t) => t.tag.id)
+        .sort()
+        .join(',');
       if (before !== [...tagIds].sort().join(',')) changed.push('tags');
     }
 
@@ -236,7 +243,10 @@ ticketsRouter.patch(
         data: auditData({
           orgId: actor.orgId,
           actorId: actor.userId,
-          action: changed.includes('assigneeId') && changed.length === 1 ? 'TICKET_ASSIGNED' : 'TICKET_UPDATED',
+          action:
+            changed.includes('assigneeId') && changed.length === 1
+              ? 'TICKET_ASSIGNED'
+              : 'TICKET_UPDATED',
           entityType: 'Ticket',
           entityId: id,
           metadata: {
@@ -293,8 +303,14 @@ ticketsRouter.post(
         where: { id },
         data: {
           status: nextStatus,
-          resolvedAt: nextStatus === 'RESOLVED' ? now : nextStatus === 'REOPENED' ? null : existing.resolvedAt,
-          closedAt: nextStatus === 'CLOSED' ? now : nextStatus === 'REOPENED' ? null : existing.closedAt,
+          resolvedAt:
+            nextStatus === 'RESOLVED'
+              ? now
+              : nextStatus === 'REOPENED'
+                ? null
+                : existing.resolvedAt,
+          closedAt:
+            nextStatus === 'CLOSED' ? now : nextStatus === 'REOPENED' ? null : existing.closedAt,
         },
         select: ticketSelect,
       });
@@ -318,7 +334,11 @@ ticketsRouter.post(
           action: 'TICKET_STATUS_CHANGED',
           entityType: 'Ticket',
           entityId: id,
-          metadata: { from: existing.status, to: nextStatus, ...(input.note ? { note: input.note } : {}) },
+          metadata: {
+            from: existing.status,
+            to: nextStatus,
+            ...(input.note ? { note: input.note } : {}),
+          },
           ip: clientIp(req),
         }),
       });
@@ -346,7 +366,10 @@ ticketsRouter.delete(
     const db = tenant(req);
     const { id } = parseParams(idParams, req);
 
-    const existing = await db.ticket.findFirst({ where: { id }, select: { id: true, number: true } });
+    const existing = await db.ticket.findFirst({
+      where: { id },
+      select: { id: true, number: true },
+    });
     if (!existing) throw notFound('Ticket');
 
     await db.$transaction(async (tx) => {
@@ -563,4 +586,3 @@ ticketsRouter.delete(
     res.status(204).end();
   }),
 );
-

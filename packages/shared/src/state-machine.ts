@@ -120,7 +120,5 @@ export function transitionsFor(
   ticket: TransitionTicket,
   actor: TransitionActor,
 ): readonly TicketStatus[] {
-  return TICKET_TRANSITIONS[ticket.status].filter(
-    (to) => checkTransition(ticket, to, actor).ok,
-  );
+  return TICKET_TRANSITIONS[ticket.status].filter((to) => checkTransition(ticket, to, actor).ok);
 }

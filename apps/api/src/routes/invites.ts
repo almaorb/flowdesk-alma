@@ -98,7 +98,12 @@ invitesRouter.post(
     if (existingUser) throw conflict('That email address is already registered.', 'EMAIL_TAKEN');
 
     const pending = await db.invite.findFirst({
-      where: { email: input.email, acceptedAt: null, revokedAt: null, expiresAt: { gt: new Date() } },
+      where: {
+        email: input.email,
+        acceptedAt: null,
+        revokedAt: null,
+        expiresAt: { gt: new Date() },
+      },
       select: { id: true },
     });
     if (pending) throw conflict('An invite for that address is already pending.');

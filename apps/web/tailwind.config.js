@@ -39,7 +39,10 @@ export default {
         pop: '0 10px 30px -12px rgba(22, 26, 34, 0.25)',
       },
       keyframes: {
-        'fade-in': { from: { opacity: '0', transform: 'translateY(2px)' }, to: { opacity: '1', transform: 'none' } },
+        'fade-in': {
+          from: { opacity: '0', transform: 'translateY(2px)' },
+          to: { opacity: '1', transform: 'none' },
+        },
         'pulse-soft': { '0%, 100%': { opacity: '1' }, '50%': { opacity: '0.55' } },
       },
       animation: {

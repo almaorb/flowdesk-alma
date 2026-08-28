@@ -14,7 +14,14 @@ import {
 } from '../hooks/queries';
 import { formatDateTime, formatRelative } from '../lib/format';
 import { Avatar } from '../components/Avatar';
-import { PRIORITY_LABELS, PriorityBadge, SlaBadge, STATUS_LABELS, StatusBadge, TagChip } from '../components/Badges';
+import {
+  PRIORITY_LABELS,
+  PriorityBadge,
+  SlaBadge,
+  STATUS_LABELS,
+  StatusBadge,
+  TagChip,
+} from '../components/Badges';
 import { Button } from '../components/Button';
 import { FullPageSpinner } from '../components/Spinner';
 import { ErrorState, InlineError } from '../components/States';
@@ -124,7 +131,8 @@ export default function TicketDetailPage() {
               )}
               <p className="mt-1.5 text-sm text-ink-500">
                 Opened by <span className="font-medium text-ink-700">{ticket.customer?.name}</span>{' '}
-                {formatRelative(ticket.createdAt)} · last activity {formatRelative(ticket.updatedAt)}
+                {formatRelative(ticket.createdAt)} · last activity{' '}
+                {formatRelative(ticket.updatedAt)}
               </p>
             </div>
             <div className="flex shrink-0 items-center gap-2">
@@ -134,7 +142,9 @@ export default function TicketDetailPage() {
 
           <article className="card p-4">
             <header className="mb-3 flex items-center gap-2.5">
-              {ticket.customer ? <Avatar name={ticket.customer.name} id={ticket.customer.id} /> : null}
+              {ticket.customer ? (
+                <Avatar name={ticket.customer.name} id={ticket.customer.id} />
+              ) : null}
               <div>
                 <p className="text-sm font-medium text-ink-900">{ticket.customer?.name}</p>
                 <p className="text-xs text-ink-400">{formatDateTime(ticket.createdAt)}</p>
@@ -153,8 +163,17 @@ export default function TicketDetailPage() {
                   className="inline-flex items-center gap-2 rounded-lg border border-ink-200 bg-white px-2.5 py-1.5 text-xs text-ink-600"
                   title={`${attachment.contentType} · ${(attachment.sizeBytes / 1024).toFixed(0)} KB`}
                 >
-                  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-ink-400" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M21 12.8l-8.2 8.2a5 5 0 01-7-7l8.5-8.5a3.3 3.3 0 114.7 4.7l-8.5 8.5a1.7 1.7 0 11-2.3-2.3l7.8-7.8" strokeLinecap="round" />
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-3.5 w-3.5 text-ink-400"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                  >
+                    <path
+                      d="M21 12.8l-8.2 8.2a5 5 0 01-7-7l8.5-8.5a3.3 3.3 0 114.7 4.7l-8.5 8.5a1.7 1.7 0 11-2.3-2.3l7.8-7.8"
+                      strokeLinecap="round"
+                    />
                   </svg>
                   {attachment.filename}
                 </span>
@@ -171,7 +190,9 @@ export default function TicketDetailPage() {
           <form className="card mt-5 p-3" onSubmit={(event) => void submitComment(event)}>
             <textarea
               className="field min-h-[6rem] resize-y border-0 shadow-none focus:ring-0"
-              placeholder={internal ? 'Internal note — customers will not see this…' : 'Write a reply…'}
+              placeholder={
+                internal ? 'Internal note — customers will not see this…' : 'Write a reply…'
+              }
               value={body}
               onChange={(event) => setBody(event.target.value)}
               onKeyDown={(event) => {
@@ -218,15 +239,23 @@ export default function TicketDetailPage() {
               <Row label="Response due" value={formatDateTime(ticket.slaDeadline)} />
               <Row
                 label="First response"
-                value={ticket.firstResponseAt ? formatDateTime(ticket.firstResponseAt) : 'Awaiting agent'}
+                value={
+                  ticket.firstResponseAt ? formatDateTime(ticket.firstResponseAt) : 'Awaiting agent'
+                }
               />
-              {ticket.resolvedAt ? <Row label="Resolved" value={formatDateTime(ticket.resolvedAt)} /> : null}
-              {ticket.closedAt ? <Row label="Closed" value={formatDateTime(ticket.closedAt)} /> : null}
+              {ticket.resolvedAt ? (
+                <Row label="Resolved" value={formatDateTime(ticket.resolvedAt)} />
+              ) : null}
+              {ticket.closedAt ? (
+                <Row label="Closed" value={formatDateTime(ticket.closedAt)} />
+              ) : null}
             </dl>
           </section>
 
           <section className="card p-4">
-            <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-ink-400">Status</h2>
+            <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-ink-400">
+              Status
+            </h2>
             {available.length === 0 ? (
               <p className="text-sm text-ink-500">No transitions available to you.</p>
             ) : (
@@ -247,7 +276,9 @@ export default function TicketDetailPage() {
           </section>
 
           <section className="card p-4">
-            <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-ink-400">Details</h2>
+            <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-ink-400">
+              Details
+            </h2>
             <div className="space-y-3">
               <div>
                 <span className="field-label">Priority</span>
@@ -255,7 +286,9 @@ export default function TicketDetailPage() {
                   <select
                     className="field"
                     value={ticket.priority}
-                    onChange={(event) => update.mutate({ priority: event.target.value as Priority })}
+                    onChange={(event) =>
+                      update.mutate({ priority: event.target.value as Priority })
+                    }
                   >
                     {PRIORITIES.map((value) => (
                       <option key={value} value={value}>
@@ -291,7 +324,9 @@ export default function TicketDetailPage() {
               <div>
                 <span className="field-label">Tags</span>
                 <div className="flex flex-wrap gap-1.5">
-                  {ticket.tags.length === 0 ? <span className="text-sm text-ink-400">None</span> : null}
+                  {ticket.tags.length === 0 ? (
+                    <span className="text-sm text-ink-400">None</span>
+                  ) : null}
                   {ticket.tags.map((tag) => (
                     <TagChip
                       key={tag.id}
@@ -342,7 +377,8 @@ export default function TicketDetailPage() {
               className="w-full"
               loading={remove.isPending}
               onClick={() => {
-                if (!window.confirm(`Delete ticket #${ticket.number}? This cannot be undone.`)) return;
+                if (!window.confirm(`Delete ticket #${ticket.number}? This cannot be undone.`))
+                  return;
                 remove.mutate(ticket.id, { onSuccess: () => navigate('/tickets') });
               }}
             >
@@ -373,7 +409,9 @@ function CommentCard({ comment }: { comment: CommentDto }) {
       }`}
     >
       <header className="mb-2 flex items-center gap-2.5">
-        {comment.author ? <Avatar name={comment.author.name} id={comment.author.id} size="sm" /> : null}
+        {comment.author ? (
+          <Avatar name={comment.author.name} id={comment.author.id} size="sm" />
+        ) : null}
         <p className="text-sm font-medium text-ink-900">{comment.author?.name ?? 'Removed user'}</p>
         {comment.isInternal ? (
           <span className="rounded bg-amber-200/70 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-900">
@@ -384,7 +422,9 @@ function CommentCard({ comment }: { comment: CommentDto }) {
           {pending ? 'Sending…' : formatRelative(comment.createdAt)}
         </span>
       </header>
-      <p className="whitespace-pre-wrap break-words text-sm leading-relaxed text-ink-700">{comment.body}</p>
+      <p className="whitespace-pre-wrap break-words text-sm leading-relaxed text-ink-700">
+        {comment.body}
+      </p>
     </li>
   );
 }

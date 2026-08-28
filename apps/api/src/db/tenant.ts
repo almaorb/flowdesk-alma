@@ -18,7 +18,15 @@ import { prisma } from './prisma.js';
  * creation) must use the unscoped `prisma` client explicitly, which makes those
  * few call sites easy to audit.
  */
-const TENANT_MODELS = new Set(['User', 'Invite', 'Ticket', 'Comment', 'Tag', 'Attachment', 'AuditLog']);
+const TENANT_MODELS = new Set([
+  'User',
+  'Invite',
+  'Ticket',
+  'Comment',
+  'Tag',
+  'Attachment',
+  'AuditLog',
+]);
 
 /** Models scoped through a relation because they carry no orgId column. */
 const RELATION_SCOPED_MODELS: Record<string, string> = { TicketTag: 'ticket' };

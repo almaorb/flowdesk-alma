@@ -86,7 +86,10 @@ usersRouter.patch(
     if (!target) throw notFound('User');
 
     // Guard against an org locking itself out of its own admin console.
-    if (target.role === 'ADMIN' && (input.role === 'AGENT' || input.role === 'CUSTOMER' || input.isActive === false)) {
+    if (
+      target.role === 'ADMIN' &&
+      (input.role === 'AGENT' || input.role === 'CUSTOMER' || input.isActive === false)
+    ) {
       const admins = await db.user.count({ where: { role: 'ADMIN', isActive: true } });
       if (admins <= 1) {
         throw badRequest('An organization must keep at least one active admin.', [

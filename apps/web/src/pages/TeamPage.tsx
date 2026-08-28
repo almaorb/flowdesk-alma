@@ -1,7 +1,13 @@
 import { useState, type FormEvent } from 'react';
 import { ROLES } from '@flowdesk/shared';
 import type { Role } from '@flowdesk/shared';
-import { useCreateInvite, useInvites, useRevokeInvite, useUpdateUser, useUsers } from '../hooks/queries';
+import {
+  useCreateInvite,
+  useInvites,
+  useRevokeInvite,
+  useUpdateUser,
+  useUsers,
+} from '../hooks/queries';
 import { formatDate, formatRelative } from '../lib/format';
 import { PageHeader } from '../components/Layout';
 import { Avatar } from '../components/Avatar';
@@ -68,7 +74,9 @@ export default function TeamPage() {
                     <span className="inline-flex items-center gap-2.5">
                       <Avatar name={member.name} id={member.id} size="sm" />
                       <span>
-                        <span className="block text-sm font-medium text-ink-900">{member.name}</span>
+                        <span className="block text-sm font-medium text-ink-900">
+                          {member.name}
+                        </span>
                         <span className="block text-xs text-ink-500">{member.email}</span>
                       </span>
                     </span>
@@ -77,7 +85,9 @@ export default function TeamPage() {
                     <select
                       className="field h-8 py-1 text-xs"
                       value={member.role}
-                      onChange={(event) => updateUser.mutate({ id: member.id, role: event.target.value })}
+                      onChange={(event) =>
+                        updateUser.mutate({ id: member.id, role: event.target.value })
+                      }
                     >
                       {ROLES.map((role) => (
                         <option key={role} value={role}>
@@ -97,12 +107,16 @@ export default function TeamPage() {
                       {member.isActive ? 'Active' : 'Deactivated'}
                     </span>
                   </td>
-                  <td className="px-4 py-2.5 text-xs text-ink-500">{formatDate(member.createdAt)}</td>
+                  <td className="px-4 py-2.5 text-xs text-ink-500">
+                    {formatDate(member.createdAt)}
+                  </td>
                   <td className="px-4 py-2.5 text-right">
                     <Button
                       size="sm"
                       variant="ghost"
-                      onClick={() => updateUser.mutate({ id: member.id, isActive: !member.isActive })}
+                      onClick={() =>
+                        updateUser.mutate({ id: member.id, isActive: !member.isActive })
+                      }
                     >
                       {member.isActive ? 'Deactivate' : 'Reactivate'}
                     </Button>
@@ -149,7 +163,9 @@ export default function TeamPage() {
                   <td className="px-4 py-2.5">
                     <RoleBadge role={invite.role} />
                   </td>
-                  <td className="px-4 py-2.5 text-xs text-ink-500">{formatRelative(invite.expiresAt)}</td>
+                  <td className="px-4 py-2.5 text-xs text-ink-500">
+                    {formatRelative(invite.expiresAt)}
+                  </td>
                   <td className="px-4 py-2.5">
                     <div className="flex justify-end gap-2">
                       <Button size="sm" onClick={() => void copy(invite.url, invite.id)}>
@@ -221,7 +237,11 @@ function InviteModal({ open, onClose }: { open: boolean; onClose: () => void }) 
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
-          <SelectField label="Role" value={role} onChange={(event) => setRole(event.target.value as Role)}>
+          <SelectField
+            label="Role"
+            value={role}
+            onChange={(event) => setRole(event.target.value as Role)}
+          >
             {ROLES.map((value) => (
               <option key={value} value={value}>
                 {value}

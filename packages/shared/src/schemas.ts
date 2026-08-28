@@ -139,7 +139,11 @@ export type CreateTagInput = z.infer<typeof createTagSchema>;
 export const createAttachmentSchema = z.object({
   filename: z.string().trim().min(1).max(255),
   contentType: z.string().trim().min(1).max(120),
-  sizeBytes: z.coerce.number().int().min(0).max(50 * 1024 * 1024),
+  sizeBytes: z.coerce
+    .number()
+    .int()
+    .min(0)
+    .max(50 * 1024 * 1024),
   url: z.string().url().max(2048).optional(),
 });
 export type CreateAttachmentInput = z.infer<typeof createAttachmentSchema>;
