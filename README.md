@@ -28,13 +28,13 @@ Then open **http://localhost:5173**.
 The API container applies migrations and seeds the demo data before it starts
 serving, so the first request already has 310 tickets behind it.
 
-| Service | URL |
-| --- | --- |
-| Web app | http://localhost:5173 |
-| API | http://localhost:4000/api |
-| API reference (Swagger UI) | http://localhost:4000/api/docs |
-| Health probe | http://localhost:4000/api/health |
-| Postgres | `localhost:5433` (`flowdesk` / `flowdesk`) |
+| Service                    | URL                                        |
+| -------------------------- | ------------------------------------------ |
+| Web app                    | http://localhost:5173                      |
+| API                        | http://localhost:4000/api                  |
+| API reference (Swagger UI) | http://localhost:4000/api/docs             |
+| Health probe               | http://localhost:4000/api/health           |
+| Postgres                   | `localhost:5433` (`flowdesk` / `flowdesk`) |
 
 Set `SEED_ON_BOOT=false` to skip seeding. Re-running the seed is safe: it
 rebuilds only the two demo organizations and never duplicates data.
@@ -70,13 +70,13 @@ to the API on port 4000, so the browser only ever talks to one origin.
 
 Password for every seeded account: **`Password123!`**
 
-| Organization | Role | Email |
-| --- | --- | --- |
-| Northwind Support | Admin | `ada.lovelace@northwind.test` |
-| Northwind Support | Agent | `grace.hopper@northwind.test` |
-| Northwind Support | Customer | `bruno.silva@northwind.test` |
-| Contoso Care | Admin | `marie.curie@contoso.test` |
-| Contoso Care | Agent | `katherine.johnson@contoso.test` |
+| Organization      | Role     | Email                            |
+| ----------------- | -------- | -------------------------------- |
+| Northwind Support | Admin    | `ada.lovelace@northwind.test`    |
+| Northwind Support | Agent    | `grace.hopper@northwind.test`    |
+| Northwind Support | Customer | `bruno.silva@northwind.test`     |
+| Contoso Care      | Admin    | `marie.curie@contoso.test`       |
+| Contoso Care      | Agent    | `katherine.johnson@contoso.test` |
 
 The two organizations exist so isolation can be checked by hand: sign in as the
 Contoso admin, take a ticket id from Northwind, and request it — the API
@@ -86,18 +86,18 @@ returns `404`, never the row.
 
 ## Commands
 
-| Command | What it does |
-| --- | --- |
-| `npm run dev` | Shared package in watch mode + API + web |
-| `npm test` | 180 tests (29 shared unit + 151 API) |
-| `npm run lint` | ESLint across every workspace, zero warnings allowed |
-| `npm run typecheck` | `tsc --noEmit` for all three workspaces |
-| `npm run format` | Prettier write (`format:check` to verify) |
-| `npm run build` | Production build of all three workspaces |
-| `npm run db:migrate` | Create a new migration from schema changes |
-| `npm run db:deploy` | Apply committed migrations (deployment path) |
-| `npm run db:seed` | Rebuild the demo data |
-| `npm run db:reset` | Drop, re-migrate and re-seed |
+| Command              | What it does                                         |
+| -------------------- | ---------------------------------------------------- |
+| `npm run dev`        | Shared package in watch mode + API + web             |
+| `npm test`           | 180 tests (29 shared unit + 151 API)                 |
+| `npm run lint`       | ESLint across every workspace, zero warnings allowed |
+| `npm run typecheck`  | `tsc --noEmit` for all three workspaces              |
+| `npm run format`     | Prettier write (`format:check` to verify)            |
+| `npm run build`      | Production build of all three workspaces             |
+| `npm run db:migrate` | Create a new migration from schema changes           |
+| `npm run db:deploy`  | Apply committed migrations (deployment path)         |
+| `npm run db:seed`    | Rebuild the demo data                                |
+| `npm run db:reset`   | Drop, re-migrate and re-seed                         |
 
 Tests need a **second** database (`TEST_DATABASE_URL`). The suite migrates it
 with `prisma migrate deploy` before the first test and truncates between files,
@@ -245,18 +245,18 @@ npm test
 
 **180 tests, all passing.**
 
-| Suite | Tests | Covers |
-| --- | --- | --- |
-| `packages/shared` unit | 29 | Transition graph (reachability, no self-edges, REOPENED authorisation, customer limits), SLA maths |
-| `tests/unit/auth` | 15 | bcrypt salting, constant-work unknown-email path, token claims, forged/expired/wrong-audience rejection, refresh rotation and reuse detection |
-| `tests/api/tenancy` | 19 | Cross-tenant read **and** write probes on every resource, plus direct tests that the query extension rewrites a forgotten filter and overrides a spoofed `orgId` |
-| `tests/api/transitions` | 15 | Happy path, 409 on illegal edges, 403 on unauthorised reopen, and proof a refused transition mutates and logs nothing |
-| `tests/api/rbac` | 40 | Admin-only surfaces across all four principals, customer visibility, role changes, error-envelope consistency |
-| `tests/api/tickets` | 24 | CRUD, pagination, every filter, case-insensitive search, sorting, SLA recomputation, internal-note visibility |
-| `tests/api/sla` | 10 | What does and does not stop the clock, sweep correctness, idempotence, audit rows |
-| `tests/api/auth` | 13 | Signup, duplicate email, login parity for wrong password vs unknown user, refresh rotation, full invite flow |
-| `tests/api/analytics` | 8 | Each aggregation checked against directly-counted data |
-| `tests/api/docs` | 7 | Spec validity and route coverage |
+| Suite                   | Tests | Covers                                                                                                                                                           |
+| ----------------------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/shared` unit  | 29    | Transition graph (reachability, no self-edges, REOPENED authorisation, customer limits), SLA maths                                                               |
+| `tests/unit/auth`       | 15    | bcrypt salting, constant-work unknown-email path, token claims, forged/expired/wrong-audience rejection, refresh rotation and reuse detection                    |
+| `tests/api/tenancy`     | 19    | Cross-tenant read **and** write probes on every resource, plus direct tests that the query extension rewrites a forgotten filter and overrides a spoofed `orgId` |
+| `tests/api/transitions` | 15    | Happy path, 409 on illegal edges, 403 on unauthorised reopen, and proof a refused transition mutates and logs nothing                                            |
+| `tests/api/rbac`        | 40    | Admin-only surfaces across all four principals, customer visibility, role changes, error-envelope consistency                                                    |
+| `tests/api/tickets`     | 24    | CRUD, pagination, every filter, case-insensitive search, sorting, SLA recomputation, internal-note visibility                                                    |
+| `tests/api/sla`         | 10    | What does and does not stop the clock, sweep correctness, idempotence, audit rows                                                                                |
+| `tests/api/auth`        | 13    | Signup, duplicate email, login parity for wrong password vs unknown user, refresh rotation, full invite flow                                                     |
+| `tests/api/analytics`   | 8     | Each aggregation checked against directly-counted data                                                                                                           |
+| `tests/api/docs`        | 7     | Spec validity and route coverage                                                                                                                                 |
 
 The API suite runs against a real Postgres database — no mocks — brought up
 with the committed migrations.
