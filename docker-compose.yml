@@ -1,0 +1,68 @@
+# FlowDesk — full stack in one command.
+#
+#   docker compose up --build
+#   open http://localhost:5173
+#
+# The API applies migrations and seeds the demo data on boot, so the app has
+# 310 tickets across two tenants the moment it comes up.
+
+name: flowdesk
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: flowdesk
+      POSTGRES_PASSWORD: flowdesk
+      POSTGRES_DB: flowdesk
+    # Published on 5433 so it does not collide with a Postgres already running
+    # on the host. Nothing inside the stack uses this port.
+    ports:
+      - '5433:5432'
+    volumes:
+      - flowdesk-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U flowdesk -d flowdesk']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      LOG_LEVEL: info
+      DATABASE_URL: postgresql://flowdesk:flowdesk@db:5432/flowdesk?schema=public
+      # Demo values. Override both in anything that is not a local demo — the
+      # API refuses to boot in production with the .env.example secrets.
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:-compose-access-secret-please-change-me}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-compose-refresh-secret-please-change-me}
+      CORS_ORIGINS: http://localhost:5173,http://127.0.0.1:5173
+      WEB_BASE_URL: http://localhost:5173
+      SLA_JOB_ENABLED: 'true'
+      SLA_JOB_INTERVAL_MS: '60000'
+      SEED_ON_BOOT: ${SEED_ON_BOOT:-true}
+    ports:
+      - '4000:4000'
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - '5173:80'
+
+volumes:
+  flowdesk-db:
