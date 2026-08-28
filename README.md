@@ -13,6 +13,11 @@ apps/web        React 18 + TypeScript + Vite + TanStack Query + Tailwind
 packages/shared Types, Zod schemas, the ticket state machine and SLA rules
 ```
 
+FlowDesk was built from the brief in [PROMPT.md](PROMPT.md). A second agent built
+the same brief independently; [docs/BUILD-OFF.md](docs/BUILD-OFF.md) compares the
+two builds on measured behaviour — both APIs booted side by side and hit with the
+same nineteen probes, both test suites executed, both UIs driven in a browser.
+
 ---
 
 ## Quick start
